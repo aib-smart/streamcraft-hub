@@ -1,112 +1,60 @@
-import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { Button } from "./ui/button";
-import { Menu, X, Play } from "lucide-react";
+import { Link } from "react-router-dom";
 import { useAuth } from "./AuthProvider";
+import { Button } from "./ui/button";
+import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
-import { useToast } from "@/components/ui/use-toast";
+import { Shield } from "lucide-react";
 
 const Navbar = () => {
-  const [isOpen, setIsOpen] = useState(false);
   const { user } = useAuth();
-  const navigate = useNavigate();
-  const { toast } = useToast();
+
+  const { data: isAdmin } = useQuery({
+    queryKey: ["isAdmin", user?.id],
+    queryFn: async () => {
+      if (!user) return false;
+      const { data } = await supabase
+        .from("user_roles")
+        .select("role")
+        .eq("user_id", user.id)
+        .single();
+      return data?.role === "admin";
+    },
+    enabled: !!user,
+  });
 
   const handleSignOut = async () => {
-    const { error } = await supabase.auth.signOut();
-    if (error) {
-      toast({
-        title: "Error",
-        description: "Failed to sign out. Please try again.",
-        variant: "destructive",
-      });
-    } else {
-      toast({
-        title: "Signed out",
-        description: "You have been successfully signed out.",
-      });
-      navigate("/auth");
-    }
+    await supabase.auth.signOut();
   };
 
   return (
-    <nav className="bg-background border-b">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between h-16">
-          <div className="flex">
-            <Link to="/" className="flex items-center">
-              <Play className="h-8 w-8 text-primary" />
-              <span className="ml-2 text-xl font-bold">JStreams</span>
-            </Link>
-          </div>
+    <nav className="border-b">
+      <div className="container mx-auto px-4 h-16 flex items-center justify-between">
+        <Link to="/" className="font-semibold text-lg">
+          App
+        </Link>
 
-          {/* Desktop menu */}
-          <div className="hidden md:flex md:items-center md:space-x-4">
-            {user ? (
-              <>
-                <Link to="/streams" className="text-foreground hover:text-primary px-3 py-2 rounded-md">
-                  Streams
+        <div className="flex items-center gap-4">
+          {user ? (
+            <>
+              {isAdmin && (
+                <Link to="/admin">
+                  <Button variant="ghost" size="sm">
+                    <Shield className="h-4 w-4 mr-2" />
+                    Admin
+                  </Button>
                 </Link>
-                <Link to="/profile" className="text-foreground hover:text-primary px-3 py-2 rounded-md">
-                  Profile
-                </Link>
-                <Button variant="default" onClick={handleSignOut}>
-                  Sign Out
-                </Button>
-              </>
-            ) : (
-              <Button variant="default" onClick={() => navigate("/auth")}>
-                Sign In
+              )}
+              <Button variant="outline" size="sm" onClick={handleSignOut}>
+                Sign Out
               </Button>
-            )}
-          </div>
-
-          {/* Mobile menu button */}
-          <div className="flex md:hidden">
-            <button
-              onClick={() => setIsOpen(!isOpen)}
-              className="inline-flex items-center justify-center p-2 rounded-md text-foreground hover:text-primary focus:outline-none"
-            >
-              {isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-            </button>
-          </div>
+            </>
+          ) : (
+            <Link to="/auth">
+              <Button size="sm">Sign In</Button>
+            </Link>
+          )}
         </div>
       </div>
-
-      {/* Mobile menu */}
-      {isOpen && (
-        <div className="md:hidden">
-          <div className="px-2 pt-2 pb-3 space-y-1">
-            {user ? (
-              <>
-                <Link
-                  to="/streams"
-                  className="block px-3 py-2 rounded-md text-foreground hover:text-primary"
-                >
-                  Streams
-                </Link>
-                <Link
-                  to="/profile"
-                  className="block px-3 py-2 rounded-md text-foreground hover:text-primary"
-                >
-                  Profile
-                </Link>
-                <Button variant="default" className="w-full mt-2" onClick={handleSignOut}>
-                  Sign Out
-                </Button>
-              </>
-            ) : (
-              <Button
-                variant="default"
-                className="w-full mt-2"
-                onClick={() => navigate("/auth")}
-              >
-                Sign In
-              </Button>
-            )}
-          </div>
-        </div>
-      )}
     </nav>
   );
 };
