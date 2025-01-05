@@ -2,16 +2,19 @@ import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
+import { Loader2 } from "lucide-react"; // Ensure you import Loader2 if you're using it for loading state
 
 const Index = () => {
-  const { data: streams, isLoading } = useQuery({
+  const { data: streams, isLoading, error } = useQuery({
     queryKey: ["streams"],
     queryFn: async () => {
-      const { data } = await supabase
+      const { data, error } = await supabase
         .from("streams")
         .select("*")
         .order("created_at", { ascending: false }) // Fetch streams ordered by created_at
         .limit(3); // Limit to 3 most recent streams for Featured section
+
+      if (error) throw new Error(error.message); // Throw error if any
       return data || [];
     },
   });
@@ -20,6 +23,14 @@ const Index = () => {
     return (
       <div className="flex justify-center items-center min-h-[50vh]">
         <Loader2 className="h-8 w-8 animate-spin" />
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="flex justify-center items-center min-h-[50vh] text-red-500">
+        <p>Error loading streams: {error.message}</p>
       </div>
     );
   }
@@ -51,19 +62,23 @@ const Index = () => {
         <div className="max-w-7xl mx-auto">
           <h2 className="text-3xl font-bold text-center mb-12">Featured Streams</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {streams.map((stream) => (
-              <div key={stream.id} className="bg-card rounded-lg shadow-lg overflow-hidden">
-                <div className="aspect-video bg-muted" />
-                <div className="p-6">
-                  <h3 className="text-xl font-semibold mb-2">{stream.title}</h3>
-                  <p className="text-muted-foreground mb-4">
-                    Experience amazing content from our curated collection.
-                  </p>
-                  <p className="text-lg font-semibold text-primary mb-4">Free</p> {/* Display 'Free' for all streams */}
-                  <Button className="w-full">Watch Now</Button>
+            {streams.length > 0 ? (
+              streams.map((stream) => (
+                <div key={stream.id} className="bg-card rounded-lg shadow-lg overflow-hidden">
+                  <div className="aspect-video bg-muted" />
+                  <div className="p-6">
+                    <h3 className="text-xl font-semibold mb-2">{stream.title}</h3>
+                    <p className="text-muted-foreground mb-4">
+                      Experience amazing content from our curated collection.
+                    </p>
+                    <p className="text-lg font-semibold text-primary mb-4">Free</p>
+                    <Button className="w-full">Watch Now</Button>
+                  </div>
                 </div>
-              </div>
-            ))}
+              ))
+            ) : (
+              <p>No streams available at the moment.</p>
+            )}
           </div>
         </div>
       </section>
