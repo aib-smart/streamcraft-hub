@@ -3,6 +3,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Loader2, Play, Clock, Users } from "lucide-react";
+import { Link } from "react-router-dom"; // Import Link for navigation
 
 const Streams = () => {
   const { data: streams, isLoading, isError, error } = useQuery({
@@ -57,33 +58,35 @@ const Streams = () => {
       {/* Stream Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {streams.map((stream) => (
-          <Card key={stream.id} className="hover:shadow-lg transition-shadow">
-            <CardHeader>
-              <CardTitle>{stream.title}</CardTitle>
-              <CardDescription>{stream.description}</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div
-                className="aspect-video bg-muted rounded-md mb-4"
-                style={{ backgroundImage: `url(${stream.thumbnail_url})` }}
-              />
-              <div className="flex items-center text-sm text-muted-foreground gap-4">
-                <span className="flex items-center">
-                  <Users className="mr-1 h-4 w-4" />
-                  {stream.viewer_count} viewers
-                </span>
-                <span className="flex items-center">
-                  <Clock className="mr-1 h-4 w-4" />
-                  {formatDuration(stream.duration)} {/* Formatting the duration */}
-                </span>
-              </div>
-            </CardContent>
-            <CardFooter>
-              <Button className="w-full">
-                <Play className="mr-2 h-4 w-4" /> Join Stream
-              </Button>
-            </CardFooter>
-          </Card>
+          <Link to={`/streams/${stream.id}`} key={stream.id} className="hover:shadow-lg transition-shadow">
+            <Card className="hover:shadow-lg transition-shadow">
+              <CardHeader>
+                <CardTitle>{stream.title}</CardTitle>
+                <CardDescription>{stream.description}</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div
+                  className="aspect-video bg-muted rounded-md mb-4"
+                  style={{ backgroundImage: `url(${stream.thumbnail_url})` }}
+                />
+                <div className="flex items-center text-sm text-muted-foreground gap-4">
+                  <span className="flex items-center">
+                    <Users className="mr-1 h-4 w-4" />
+                    {stream.viewer_count} viewers
+                  </span>
+                  <span className="flex items-center">
+                    <Clock className="mr-1 h-4 w-4" />
+                    {formatDuration(stream.duration)} {/* Formatting the duration */}
+                  </span>
+                </div>
+              </CardContent>
+              <CardFooter>
+                <Button className="w-full">
+                  <Play className="mr-2 h-4 w-4" /> Join Stream
+                </Button>
+              </CardFooter>
+            </Card>
+          </Link>
         ))}
       </div>
     </div>

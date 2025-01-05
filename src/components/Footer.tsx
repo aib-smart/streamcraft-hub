@@ -15,7 +15,7 @@ const Footer = () => {
             <h3 className="text-md font-semibold mb-4 uppercase">Quick Links</h3>
             <ul className="space-y-2">
               <li>
-                <Link to="/streams" className="text-muted-foreground hover:text-primarytext-[14px]">
+                <Link to="/streams" className="text-muted-foreground hover:text-primary text-[14px]">
                   Browse Streams
                 </Link>
               </li>
