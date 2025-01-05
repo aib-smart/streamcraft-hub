@@ -5,14 +5,15 @@ import { Button } from "@/components/ui/button";
 import { Loader2, Play, Clock, Users } from "lucide-react";
 
 const Streams = () => {
-  const { data: streams, isLoading } = useQuery({
+  const { data: streams, isLoading, isError, error } = useQuery({
     queryKey: ["streams"],
     queryFn: async () => {
-      // This is a placeholder query - you'll need to create a streams table
-      const { data } = await supabase
+      const { data, error } = await supabase
         .from("streams")
         .select("*")
         .order("created_at", { ascending: false });
+      
+      if (error) throw new Error(error.message);
       return data || [];
     },
   });
@@ -24,6 +25,16 @@ const Streams = () => {
       </div>
     );
   }
+
+  if (isError) {
+    return <div>Error loading streams: {error.message}</div>;
+  }
+
+  const formatDuration = (seconds: number) => {
+    const hours = Math.floor(seconds / 3600);
+    const minutes = Math.floor((seconds % 3600) / 60);
+    return `${hours}h ${minutes}m`;
+  };
 
   return (
     <div className="container py-8 fade-in">
@@ -45,22 +56,25 @@ const Streams = () => {
 
       {/* Stream Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {["Tech Talk", "Nature Live", "Cooking Show", "Gaming Stream", "Music Live", "Art Studio"].map((stream) => (
-          <Card key={stream} className="hover:shadow-lg transition-shadow">
+        {streams.map((stream) => (
+          <Card key={stream.id} className="hover:shadow-lg transition-shadow">
             <CardHeader>
-              <CardTitle>{stream}</CardTitle>
-              <CardDescription>Live now</CardDescription>
+              <CardTitle>{stream.title}</CardTitle>
+              <CardDescription>{stream.description}</CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="aspect-video bg-muted rounded-md mb-4" />
+              <div
+                className="aspect-video bg-muted rounded-md mb-4"
+                style={{ backgroundImage: `url(${stream.thumbnail_url})` }}
+              />
               <div className="flex items-center text-sm text-muted-foreground gap-4">
                 <span className="flex items-center">
                   <Users className="mr-1 h-4 w-4" />
-                  1.2k viewers
+                  {stream.viewer_count} viewers
                 </span>
                 <span className="flex items-center">
                   <Clock className="mr-1 h-4 w-4" />
-                  2h 15m
+                  {formatDuration(stream.duration)} {/* Formatting the duration */}
                 </span>
               </div>
             </CardContent>
