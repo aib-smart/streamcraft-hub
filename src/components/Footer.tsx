@@ -3,8 +3,9 @@ import { Link, useLocation } from "react-router-dom";
 const Footer = () => {
   const location = useLocation();
 
-  // Check if we're on the Auth page
+  // Check if we're on the Auth & Home page
   const isAuthPage = location.pathname === "/auth";
+  const isHomePage = location.pathname !== "/"
 
   return (
     <footer className="bg-background text-muted-foreground border-t mt-auto">
@@ -21,7 +22,7 @@ const Footer = () => {
             <h3 className="text-lg font-semibold mb-4 text-primary">Quick Links</h3>
             <ul className="space-y-4">
               {/* Conditionally render the links */}
-              {!isAuthPage && (
+              {!isAuthPage && !isHomePage && (
                 <>
                   <li>
                     <Link
