@@ -1,6 +1,11 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 const Footer = () => {
+  const location = useLocation();
+
+  // Check if we're on the Auth page
+  const isAuthPage = location.pathname === "/auth";
+
   return (
     <footer className="bg-background border-t mt-auto">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -14,16 +19,21 @@ const Footer = () => {
           <div>
             <h3 className="text-md font-semibold mb-4 uppercase">Quick Links</h3>
             <ul className="space-y-2">
-              <li>
-                <Link to="/streams" className="text-muted-foreground hover:text-primary text-[14px]">
-                  Browse Streams
-                </Link>
-              </li>
-              <li>
-                <Link to="/profile" className="text-muted-foreground hover:text-primary text-[14px]">
-                  My Profile
-                </Link>
-              </li>
+              {/* Conditionally render the links */}
+              {!isAuthPage && (
+                <>
+                  <li>
+                    <Link to="/streams" className="text-muted-foreground hover:text-primary text-[14px]">
+                      Browse Streams
+                    </Link>
+                  </li>
+                  <li>
+                    <Link to="/profile" className="text-muted-foreground hover:text-primary text-[14px]">
+                      My Profile
+                    </Link>
+                  </li>
+                </>
+              )}
               <li>
                 <Link to="/contact" className="text-muted-foreground hover:text-primary text-[14px]">
                   Contact Us
