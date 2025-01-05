@@ -10,6 +10,9 @@ import Footer from "./components/Footer";
 import Index from "./pages/Index";
 import Auth from "./pages/Auth";
 import Admin from "./pages/Admin";
+import Streams from "./pages/Streams";
+import Profile from "./pages/Profile";
+import Contact from "./pages/Contact";
 
 const queryClient = new QueryClient();
 
@@ -41,6 +44,23 @@ const App = () => (
                     </ProtectedRoute>
                   }
                 />
+                <Route
+                  path="/streams"
+                  element={
+                    <ProtectedRoute>
+                      <Streams />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/profile"
+                  element={
+                    <ProtectedRoute>
+                      <Profile />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route path="/contact" element={<Contact />} />
               </Routes>
             </main>
             <Footer />
