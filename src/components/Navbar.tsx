@@ -3,7 +3,8 @@ import { useAuth } from "./AuthProvider";
 import { Button } from "./ui/button";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
-import { Shield } from "lucide-react";
+import { Shield, UserRound } from "lucide-react";
+import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 
 const Navbar = () => {
   const { user } = useAuth();
@@ -18,6 +19,20 @@ const Navbar = () => {
         .eq("user_id", user.id)
         .single();
       return data?.role === "admin";
+    },
+    enabled: !!user,
+  });
+
+  const { data: profile } = useQuery({
+    queryKey: ["profile", user?.id],
+    queryFn: async () => {
+      if (!user) return null;
+      const { data } = await supabase
+        .from("profiles")
+        .select("username, full_name, avatar_url")
+        .eq("id", user.id)
+        .single();
+      return data;
     },
     enabled: !!user,
   });
@@ -44,6 +59,17 @@ const Navbar = () => {
                   </Button>
                 </Link>
               )}
+              <div className="flex items-center gap-3 mr-2">
+                <Avatar className="h-8 w-8">
+                  <AvatarImage src={profile?.avatar_url} />
+                  <AvatarFallback>
+                    <UserRound className="h-4 w-4" />
+                  </AvatarFallback>
+                </Avatar>
+                <div className="text-sm">
+                  {profile?.full_name || profile?.username || "User"}
+                </div>
+              </div>
               <Button variant="outline" size="sm" onClick={handleSignOut}>
                 Sign Out
               </Button>
