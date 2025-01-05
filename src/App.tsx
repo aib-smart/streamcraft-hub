@@ -13,6 +13,7 @@ import Admin from "./pages/Admin";
 import Streams from "./pages/Streams";
 import Profile from "./pages/Profile";
 import Contact from "./pages/Contact";
+import StreamDetail from "./pages/StreamDetail";
 
 const queryClient = new QueryClient();
 
@@ -60,6 +61,7 @@ const App = () => (
                     </ProtectedRoute>
                   }
                 />
+                <Route path="/stream/:streamId" element={<ProtectedRoute><StreamDetail /></ProtectedRoute>} />
                 <Route path="/contact" element={<Contact />} />
               </Routes>
             </main>

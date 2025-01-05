@@ -1,24 +1,39 @@
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
-import { Loader2, Play, Clock, Users } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Loader2 } from "lucide-react";
 
 const StreamDetail = () => {
-  const { id } = useParams(); // Getting the stream ID from the URL
-  const { data: stream, isLoading, isError, error } = useQuery({
-    queryKey: ["stream", id],
-    queryFn: async () => {
-      const { data, error } = await supabase
-        .from("streams")
-        .select("*")
-        .eq("id", id)
-        .single();
-      
-      if (error) throw new Error(error.message);
-      return data;
-    },
-  });
+  const { streamId } = useParams<{ streamId: string }>();
+  const [stream, setStream] = useState<any | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchStream = async () => {
+      try {
+        const { data, error } = await supabase
+          .from("streams")
+          .select("*")
+          .eq("id", streamId)
+          .single();
+
+        if (error) {
+          throw new Error(error.message);
+        }
+
+        setStream(data);
+        setIsLoading(false);
+      } catch (error: any) {
+        console.error("Error fetching stream data:", error);
+        setIsLoading(false);
+      }
+    };
+
+    if (streamId) {
+      fetchStream();
+    }
+  }, [streamId]);
 
   if (isLoading) {
     return (
@@ -28,35 +43,30 @@ const StreamDetail = () => {
     );
   }
 
-  if (isError) {
-    return <div>Error loading stream: {error.message}</div>;
+  if (!stream) {
+    return <div>Stream not found</div>;
   }
 
   return (
     <div className="container py-8 fade-in">
       <h1 className="text-4xl font-bold mb-8">{stream.title}</h1>
-
-      <div className="mb-12 relative overflow-hidden rounded-xl bg-gradient-to-r from-purple-500 to-blue-500">
-        <div className="absolute inset-0 bg-black/20" />
-        <div className="relative p-8 text-white">
-          <h2 className="text-3xl font-bold mb-4">Now Playing</h2>
-          <p className="text-lg mb-6 max-w-2xl">{stream.description}</p>
-          <Button size="lg" variant="secondary">
-            <Play className="mr-2 h-4 w-4" /> Watch Now
-          </Button>
-        </div>
+      <div className="mb-6">
+        <p className="text-xl text-muted-foreground">{stream.description}</p>
       </div>
 
-      <div className="flex items-center text-sm text-muted-foreground gap-4">
-        <span className="flex items-center">
-          <Users className="mr-1 h-4 w-4" />
-          {stream.viewer_count} viewers
-        </span>
-        <span className="flex items-center">
-          <Clock className="mr-1 h-4 w-4" />
-          {stream.duration} minutes
-        </span>
+      {/* Video Embed */}
+      <div className="aspect-video mb-6">
+      <iframe
+        src={stream.embed_url} // Assuming each stream has a unique embed URL
+        className="w-full h-full"
+        frameBorder="0"
+        allowFullScreen
+        />
       </div>
+
+      <Button variant="secondary" size="lg">
+        Watch Stream
+      </Button>
     </div>
   );
 };
