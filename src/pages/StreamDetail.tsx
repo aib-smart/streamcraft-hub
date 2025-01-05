@@ -56,9 +56,9 @@ const StreamDetail = () => {
 
       {/* Styled Video Player */}
       <div className="relative mb-8 overflow-hidden rounded-xl bg-black shadow-lg">
-        <div className="absolute inset-0 bg-black/50 z-10 flex justify-center items-center">
+        {/* <div className="absolute inset-0 bg-black/50 z-10 flex justify-center items-center">
           <Button className="text-white bg-primary hover:bg-primary-dark shadow-md">Watch Now</Button>
-        </div>
+        </div> */}
         <iframe
           src={`${stream.stream_url}?autoplay=1`}  // Dynamic stream URL
           className="w-full h-[60vh] sm:h-[70vh] md:h-[80vh] lg:h-[90vh] rounded-md"

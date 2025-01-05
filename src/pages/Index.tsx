@@ -40,7 +40,7 @@ const Index = () => {
       <section className="relative py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-background to-secondary">
         <div className="max-w-7xl mx-auto">
           <div className="text-center">
-            <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight mb-4">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight mb-4">
               A Better Streaming <span className="text-primary">'Xperience!</span>
             </h1>
             <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
@@ -72,7 +72,9 @@ const Index = () => {
                       Experience amazing content from our curated collection.
                     </p>
                     <p className="text-lg font-semibold text-primary mb-4">Free</p>
-                    <Button className="w-full">Watch Now</Button>
+                    <Link to={`/streams/${stream.id}`}>
+                      <Button className="w-full">Watch Now</Button>
+                    </Link>
                   </div>
                 </div>
               ))

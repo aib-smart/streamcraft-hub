@@ -25,7 +25,7 @@ const Auth = () => {
 
   return (
     <div className="container max-w-md mx-auto mt-8 p-4">
-      <h1 className="text-2xl font-bold mb-6 text-center">Welcome to JStreams</h1>
+      <h1 className="text-2xl font-bold mb-6 text-center">Yo, Welcome Back!</h1>
       <div className="bg-card p-6 rounded-lg shadow-lg">
         <SupabaseAuth 
           supabaseClient={supabase}
@@ -34,11 +34,17 @@ const Auth = () => {
             variables: {
               default: {
                 colors: {
-                  brand: 'rgb(var(--primary))',
-                  brandAccent: 'rgb(var(--primary))',
-                }
-              }
-            }
+                  brand: 'rgb(0, 123, 255)',  // Blue color
+                  brandAccent: 'rgb(255, 255, 255)',  // White color
+                  brandButton: 'rgb(0, 123, 255)', // Blue button
+                  brandButtonText: 'rgb(255, 255, 255)', // White button text
+                  brandButtonHover: 'rgb(0, 105, 217)', // Slightly darker blue on hover
+                  inputText: 'rgb(0, 0, 0)', // Black input text
+                  inputBackground: 'rgb(255, 255, 255)', // White input background
+                  inputBorder: 'rgb(200, 200, 200)', // Light grey input border
+                },
+              },
+            },
           }}
           providers={[]}
         />
