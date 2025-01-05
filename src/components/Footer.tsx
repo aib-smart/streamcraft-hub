@@ -9,15 +9,15 @@ const Footer = () => {
   return (
     <footer className="bg-background text-muted-foreground border-t mt-auto">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
-          <div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 justify-items-center">
+          <div className="text-center">
             <h3 className="text-lg font-semibold mb-4 text-primary">About Us</h3>
             <p className="text-[14px] sm:text-base leading-relaxed">
               Hand-picked professional content, designed for everyone. Enjoy high-quality streams tailored to your preferences.
             </p>
           </div>
 
-          <div>
+          <div className="text-center">
             <h3 className="text-lg font-semibold mb-4 text-primary">Quick Links</h3>
             <ul className="space-y-4">
               {/* Conditionally render the links */}
@@ -52,7 +52,7 @@ const Footer = () => {
             </ul>
           </div>
 
-          <div>
+          <div className="text-center">
             <h3 className="text-lg font-semibold mb-4 text-primary">Connect</h3>
             <ul className="space-y-4">
               <li>
