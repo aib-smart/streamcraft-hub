@@ -46,7 +46,7 @@ const Navbar = () => {
   return (
     <nav className="border-b">
       <div className="container mx-auto px-4 h-16 flex items-center justify-between">
-        <Link to="/jstreamz" className="font-semibold text-md">
+        <Link to="/jstreamz" className="font-semibold text-md flex items-center gap-2">
         <div className="flex h-6 w-6 items-center justify-center rounded-md">
                         <Tv className="size-4" />
                     </div>
