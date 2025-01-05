@@ -37,7 +37,8 @@ const Auth = () => {
                   brand: 'rgb(0, 123, 255)',  // Blue color
                   brandAccent: 'rgb(255, 255, 255)',  // White color
                   brandButton: 'rgb(0, 123, 255)', // Blue button
-                  brandButtonText: 'rgb(0, 123, 255)', // White button text
+                  brandButtonText: 'rgb(255, 255, 255)', // White button text
+                  brandButtonHoverText: 'rgb(255, 255, 255)',
                   brandButtonHover: 'rgb(8, 92, 182)', // Slightly darker blue on hover
                   inputText: 'rgb(0, 0, 0)', // Black input text
                   inputBackground: 'rgb(255, 255, 255)', // White input background
