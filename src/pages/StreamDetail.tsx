@@ -49,25 +49,28 @@ const StreamDetail = () => {
 
   return (
     <div className="container py-8 fade-in">
-      <h1 className="text-4xl font-bold mb-8">{stream.title}</h1>
+      <h1 className="text-4xl font-bold mb-4">{stream.title}</h1>
       <div className="mb-6">
         <p className="text-xl text-muted-foreground">{stream.description}</p>
       </div>
 
-      {/* Video Embed with dynamic stream URL */}
-      <div className="aspect-video mb-6">
+      {/* Styled Video Player */}
+      <div className="relative mb-8 overflow-hidden rounded-xl bg-black shadow-lg">
+        <div className="absolute inset-0 bg-black/50 z-10 flex justify-center items-center">
+          <Button className="text-white bg-primary hover:bg-primary-dark shadow-md">Watch Now</Button>
+        </div>
         <iframe
           src={`${stream.stream_url}?autoplay=1`}  // Dynamic stream URL
-          className="w-full h-full"
+          className="w-full h-[60vh] sm:h-[70vh] md:h-[80vh] lg:h-[90vh] rounded-md"
           frameBorder="0"
           allow="autoplay; fullscreen"
           allowFullScreen
         />
       </div>
 
-      <Button variant="secondary" size="lg">
+      {/* <Button variant="secondary" size="lg">
         Watch Stream
-      </Button>
+      </Button> */}
     </div>
   );
 };
