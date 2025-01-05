@@ -60,15 +60,14 @@ const Home = () => {
 
                     {/* Right Column - Image Section */}
                     <div className="relative w-full h-48 sm:h-64 md:h-[500px] lg:h-[600px] rounded-md overflow-hidden">
-                        <Image
-                            className="w-full rounded-md"
-                            src={imageUrl}
-                            alt="Supercharged Ladies Laughing"
-                            loading="lazy"
-                        />
-                        <div className="absolute inset-0 -z-[1] bg-gradient-to-tr from-gray-200 via-white/0 to-white/0 size-full rounded-md mt-4 -mb-4 me-4 -ms-4 lg:mt-6 lg:-mb-6 lg:me-6 lg:-ms-6 dark:from-neutral-800 dark:via-neutral-900/0 dark:to-neutral-900/0"></div>
+                    <Image
+                        className="w-full h-full object-cover rounded-md"
+                        src={imageUrl}
+                        alt="Supercharged Ladies Laughing"
+                        loading="lazy"
+                    />
+                    <div className="absolute inset-0 -z-[1] bg-gradient-to-tr from-gray-200 via-white/0 to-white/0 size-full rounded-md mt-4 -mb-4 me-4 -ms-4 lg:mt-6 lg:-mb-6 lg:me-6 lg:-ms-6 dark:from-neutral-800 dark:via-neutral-900/0 dark:to-neutral-900/0"></div>
                     </div>
-
                 </div>
             </div>
 
