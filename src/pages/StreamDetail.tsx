@@ -54,13 +54,14 @@ const StreamDetail = () => {
         <p className="text-xl text-muted-foreground">{stream.description}</p>
       </div>
 
-      {/* Video Embed */}
+      {/* Video Embed with dynamic stream URL */}
       <div className="aspect-video mb-6">
-      <iframe
-        src={stream.embed_url} // Assuming each stream has a unique embed URL
-        className="w-full h-full"
-        frameBorder="0"
-        allowFullScreen
+        <iframe
+          src={`${stream.stream_url}?autoplay=1`}  // Dynamic stream URL
+          className="w-full h-full"
+          frameBorder="0"
+          allow="autoplay; fullscreen"
+          allowFullScreen
         />
       </div>
 
