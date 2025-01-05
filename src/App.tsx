@@ -4,10 +4,11 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "./components/AuthProvider";
+import Home from "./pages/Home";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
-import Index from "./pages/Index";
+import Jstreamz from "./pages/Index";
 import Auth from "./pages/Auth";
 import Admin from "./pages/Admin";
 import Streams from "./pages/Streams";
@@ -29,12 +30,13 @@ const App = () => (
             <Navbar />
             <main className="flex-grow">
               <Routes>
+              <Route path="/" element={<Home />} />
                 <Route path="/auth" element={<Auth />} />
                 <Route
-                  path="/"
+                  path="/jstreamz"
                   element={
                     <ProtectedRoute>
-                      <Index />
+                      <Jstreamz />
                     </ProtectedRoute>
                   }
                 />

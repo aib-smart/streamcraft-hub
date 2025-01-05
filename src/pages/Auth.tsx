@@ -16,7 +16,7 @@ const Auth = () => {
           title: "Welcome!",
           description: "You have successfully signed in.",
         });
-        navigate("/");
+        navigate("/jstreamz");
       }
     });
 
