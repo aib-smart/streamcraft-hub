@@ -5,7 +5,7 @@ const Footer = () => {
 
   // Check if we're on the Auth & Home page
   const isAuthPage = location.pathname === "/auth";
-  const isHomePage = location.pathname !== "/"
+  const isHomePage = location.pathname !== "/";
 
   return (
     <footer className="bg-background text-muted-foreground border-t mt-auto">
