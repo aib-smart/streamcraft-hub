@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { useAuth } from "./AuthProvider";
 import { Button } from "./ui/button";
 import { useQuery } from "@tanstack/react-query";
@@ -8,6 +8,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 
 const Navbar = () => {
   const { user } = useAuth();
+  const location = useLocation(); // Get the current location
 
   const { data: isAdmin } = useQuery({
     queryKey: ["isAdmin", user?.id],
@@ -75,9 +76,11 @@ const Navbar = () => {
               </Button>
             </>
           ) : (
-            <Link to="/auth">
-              <Button size="sm">Sign In</Button>
-            </Link>
+            location.pathname !== "/auth" && (
+              <Link to="/auth">
+                <Button size="sm">Sign In</Button>
+              </Link>
+            )
           )}
         </div>
       </div>
