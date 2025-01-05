@@ -20,6 +20,8 @@ import {
 import { Button } from "@/components/ui/button";
 import { UserCog, Loader2 } from "lucide-react";
 
+type UserRole = "admin" | "sub_admin" | "user";
+
 const UserManagement = () => {
   const { toast } = useToast();
   const queryClient = useQueryClient();
@@ -32,14 +34,14 @@ const UserManagement = () => {
         .from("user_roles")
         .select(`
           *,
-          profiles:profiles(*)
+          profiles (*)
         `);
       return users;
     },
   });
 
   const updateRole = useMutation({
-    mutationFn: async ({ userId, role }: { userId: string; role: string }) => {
+    mutationFn: async ({ userId, role }: { userId: string; role: UserRole }) => {
       setUpdating(userId);
       const { error } = await supabase
         .from("user_roles")
@@ -104,7 +106,7 @@ const UserManagement = () => {
                 <div className="flex items-center gap-2">
                   <Select
                     value={user.role}
-                    onValueChange={(value) =>
+                    onValueChange={(value: UserRole) =>
                       updateRole.mutate({ userId: user.user_id, role: value })
                     }
                     disabled={updating === user.user_id}
