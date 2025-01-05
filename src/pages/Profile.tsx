@@ -1,4 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/components/AuthProvider";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -8,9 +8,19 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Loader2, UserRound, Settings, History, PlayCircle } from "lucide-react";
+import { useState } from "react";
+import { useToast } from "@/components/ui/use-toast";
 
 const Profile = () => {
   const { user } = useAuth();
+  const { toast } = useToast();
+  const queryClient = useQueryClient();
+  const [isEditing, setIsEditing] = useState(false);
+  const [editedProfile, setEditedProfile] = useState({
+    full_name: "",
+    username: "",
+    country: "",
+  });
 
   const { data: profile, isLoading } = useQuery({
     queryKey: ["profile", user?.id],
@@ -20,10 +30,49 @@ const Profile = () => {
         .select("*")
         .eq("id", user?.id)
         .single();
+      setEditedProfile({
+        full_name: data?.full_name || "",
+        username: data?.username || "",
+        country: data?.country || "",
+      });
       return data;
     },
     enabled: !!user,
   });
+
+  const updateProfileMutation = useMutation({
+    mutationFn: async (updatedProfile: typeof editedProfile) => {
+      const { error } = await supabase
+        .from("profiles")
+        .update(updatedProfile)
+        .eq("id", user?.id);
+      if (error) throw error;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["profile", user?.id] });
+      setIsEditing(false);
+      toast({
+        title: "Profile updated",
+        description: "Your profile has been successfully updated.",
+      });
+    },
+    onError: (error) => {
+      toast({
+        title: "Error",
+        description: "Failed to update profile. Please try again.",
+        variant: "destructive",
+      });
+      console.error("Error updating profile:", error);
+    },
+  });
+
+  const handleEditToggle = () => {
+    if (isEditing) {
+      updateProfileMutation.mutate(editedProfile);
+    } else {
+      setIsEditing(true);
+    }
+  };
 
   if (isLoading) {
     return (
@@ -71,21 +120,57 @@ const Profile = () => {
                     <Label htmlFor="fullName">Full Name</Label>
                     <Input
                       id="fullName"
-                      value={profile?.full_name || ""}
-                      readOnly
+                      value={isEditing ? editedProfile.full_name : profile?.full_name || ""}
+                      onChange={(e) =>
+                        setEditedProfile({
+                          ...editedProfile,
+                          full_name: e.target.value,
+                        })
+                      }
+                      readOnly={!isEditing}
                     />
                   </div>
                   <div className="space-y-2">
                     <Label htmlFor="username">Username</Label>
-                    <Input id="username" value={profile?.username || ""} readOnly />
+                    <Input
+                      id="username"
+                      value={isEditing ? editedProfile.username : profile?.username || ""}
+                      onChange={(e) =>
+                        setEditedProfile({
+                          ...editedProfile,
+                          username: e.target.value,
+                        })
+                      }
+                      readOnly={!isEditing}
+                    />
                   </div>
                   <div className="space-y-2">
                     <Label htmlFor="country">Country</Label>
-                    <Input id="country" value={profile?.country || ""} readOnly />
+                    <Input
+                      id="country"
+                      value={isEditing ? editedProfile.country : profile?.country || ""}
+                      onChange={(e) =>
+                        setEditedProfile({
+                          ...editedProfile,
+                          country: e.target.value,
+                        })
+                      }
+                      readOnly={!isEditing}
+                    />
                   </div>
                 </div>
-                <Button variant="outline" className="mt-4">
-                  <Settings className="mr-2 h-4 w-4" /> Edit Profile
+                <Button
+                  variant="outline"
+                  className="mt-4"
+                  onClick={handleEditToggle}
+                  disabled={updateProfileMutation.isPending}
+                >
+                  {updateProfileMutation.isPending ? (
+                    <Loader2 className="h-4 w-4 animate-spin mr-2" />
+                  ) : (
+                    <Settings className="mr-2 h-4 w-4" />
+                  )}
+                  {isEditing ? "Save Profile" : "Edit Profile"}
                 </Button>
               </CardContent>
             </Card>
