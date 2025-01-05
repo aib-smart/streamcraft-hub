@@ -12,15 +12,6 @@ const Home = () => {
 
     return (
         <div className="mx-auto overflow-hidden py-0.5 md:py-4 lg:py-4 flex-grow">
-            {/* Logo */}
-            <div className="flex justify-center gap-2 md:justify-start mb-4 md:mb-0">
-                <a href="/" className="flex items-center gap-2 font-bold text-xl lg:text-2xl text-foreground lg:pl-8 md:pl-8">
-                    <div className="flex h-6 w-6 items-center justify-center rounded-md bg-primary text-primary-foreground">
-                        <Tv className="size-4" />
-                    </div>
-                    JStreams
-                </a>
-            </div>
 
             {/* Main Content Section */}
             <div className="max-w-full mx-auto px-1 sm:px-6 lg:px-8">
@@ -37,7 +28,7 @@ const Home = () => {
                         <div className="mt-7 gap-3 w-full flex justify-center md:justify-start mb-4">
                             {/* Get Started Button */}
                             <Link
-                                to="/login"
+                                to="/auth"
                                 className="inline-flex h-10 items-center justify-center rounded-md bg-primary px-2 py-2 text-[13px] font-medium text-primary-foreground ring-offset-background transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50"
                             >
                                 Get started
