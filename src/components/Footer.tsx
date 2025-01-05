@@ -6,6 +6,7 @@ const Footer = () => {
   // Check if we're on the Auth & Home page
   const isAuthPage = location.pathname === "/auth";
   const isHomePage = location.pathname === "/";
+  const isContactPage = location.pathname === "contact";
 
   return (
     <footer className="bg-background text-muted-foreground border-t mt-auto">
@@ -22,7 +23,7 @@ const Footer = () => {
             <h3 className="text-lg font-semibold mb-4 text-primary">Quick Links</h3>
             <ul className="space-y-4">
               {/* Conditionally render the links */}
-              {!isAuthPage && !isHomePage && (
+              {!isAuthPage && !isHomePage && !isContactPage && (
                 <>
                   <li>
                     <Link
