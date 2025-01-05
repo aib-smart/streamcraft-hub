@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Loader2, UserRound, Settings, History } from "lucide-react";
+import { Loader2, UserRound, Settings, History, PlayCircle } from "lucide-react";
 
 const Profile = () => {
   const { user } = useAuth();
@@ -44,8 +44,12 @@ const Profile = () => {
             </AvatarFallback>
           </Avatar>
           <div>
-            <h1 className="text-3xl font-bold mb-2">{profile?.full_name || "Your Name"}</h1>
-            <p className="text-muted-foreground">@{profile?.username || "username"}</p>
+            <h1 className="text-3xl font-bold mb-2">
+              {profile?.full_name || "Your Name"}
+            </h1>
+            <p className="text-muted-foreground">
+              @{profile?.username || "username"}
+            </p>
           </div>
         </div>
 
@@ -65,7 +69,11 @@ const Profile = () => {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="space-y-2">
                     <Label htmlFor="fullName">Full Name</Label>
-                    <Input id="fullName" value={profile?.full_name || ""} readOnly />
+                    <Input
+                      id="fullName"
+                      value={profile?.full_name || ""}
+                      readOnly
+                    />
                   </div>
                   <div className="space-y-2">
                     <Label htmlFor="username">Username</Label>
@@ -103,17 +111,26 @@ const Profile = () => {
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
-                  {["Tech Talk #45", "Nature Live: Forest Edition", "Cooking Show: Italian Night"].map((stream) => (
-                    <div key={stream} className="flex items-center justify-between py-2 border-b">
+                  {[
+                    "Tech Talk #45",
+                    "Nature Live: Forest Edition",
+                    "Cooking Show: Italian Night",
+                  ].map((stream) => (
+                    <div
+                      key={stream}
+                      className="flex items-center justify-between py-2 border-b"
+                    >
                       <div className="flex items-center gap-4">
                         <div className="w-32 h-20 bg-muted rounded" />
                         <div>
                           <h3 className="font-medium">{stream}</h3>
-                          <p className="text-sm text-muted-foreground">Watched 2 days ago</p>
+                          <p className="text-sm text-muted-foreground">
+                            Watched 2 days ago
+                          </p>
                         </div>
                       </div>
                       <Button variant="ghost" size="sm">
-                        <Play className="h-4 w-4" />
+                        <PlayCircle className="h-4 w-4" />
                       </Button>
                     </div>
                   ))}
