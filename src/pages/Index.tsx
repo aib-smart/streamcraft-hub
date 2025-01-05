@@ -8,7 +8,7 @@ const Index = () => {
         <div className="max-w-7xl mx-auto">
           <div className="text-center">
             <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight mb-4">
-              A Better Streaming <span className="text-primary">Experience!</span>
+              A Better Streaming <span className="text-primary">'Xperience!</span>
             </h1>
             <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
               Hand-picked professional content, designed for everyone.

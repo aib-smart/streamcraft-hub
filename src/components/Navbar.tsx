@@ -45,7 +45,7 @@ const Navbar = () => {
     <nav className="border-b">
       <div className="container mx-auto px-4 h-16 flex items-center justify-between">
         <Link to="/" className="font-semibold text-lg">
-          App
+          JStreamz
         </Link>
 
         <div className="flex items-center gap-4">
@@ -71,7 +71,7 @@ const Navbar = () => {
                 </div>
               </div>
               <Button variant="outline" size="sm" onClick={handleSignOut}>
-                Sign Out
+                Logout
               </Button>
             </>
           ) : (
