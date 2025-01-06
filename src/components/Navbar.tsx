@@ -87,12 +87,12 @@ const Navbar = () => {
                   <div className="space-y-2">
                     <Link to="/profile" className="flex items-center gap-2 text-sm hover:text-primary transition-colors">
                       <UserRound className="h-4 w-4" />
-                      Profile
+                      Profile & Settings
                     </Link>
-                    <Link to="/settings" className="flex items-center gap-2 text-sm hover:text-primary transition-colors">
+                    {/* <Link to="/settings" className="flex items-center gap-2 text-sm hover:text-primary transition-colors">
                       <Settings className="h-4 w-4" />
                       Settings
-                    </Link>
+                    </Link> */}
                     <button
                       onClick={handleSignOut}
                       className="flex items-center gap-2 text-sm text-destructive hover:text-destructive/80 transition-colors w-full text-left"
