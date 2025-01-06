@@ -43,8 +43,6 @@ const Auth = () => {
                   inputBackground: 'rgb(255, 255, 255)',
                   inputBorder: 'rgb(200, 200, 200)',
                   inputBorderHover: 'rgb(0, 123, 255)',
-                  inputBackground: 'rgb(255, 255, 255)',
-                  inputText: 'rgb(0, 0, 0)',
                   anchorTextColor: 'rgb(0, 123, 255)',
                   anchorTextHoverColor: 'rgb(8, 92, 182)',
                 }
