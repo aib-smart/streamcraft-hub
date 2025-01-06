@@ -1,9 +1,9 @@
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "./AuthProvider";
 import { Button } from "./ui/button";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
-import { Shield, UserRound, Settings, LogOut } from "lucide-react";
+import { Shield, UserRound, LogOut } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { Tv } from 'lucide-react';
 import {
@@ -15,6 +15,7 @@ import {
 const Navbar = () => {
   const { user } = useAuth();
   const location = useLocation();
+  const navigate = useNavigate();
 
   const { data: isAdmin } = useQuery({
     queryKey: ["isAdmin", user?.id],
@@ -48,6 +49,10 @@ const Navbar = () => {
     await supabase.auth.signOut();
   };
 
+  const handleProfileClick = () => {
+    navigate("/profile");
+  };
+
   return (
     <nav className="border-b">
       <div className="container mx-auto px-4 h-16 flex items-center justify-between">
@@ -71,7 +76,10 @@ const Navbar = () => {
               )}
               <HoverCard>
                 <HoverCardTrigger asChild>
-                  <div className="flex items-center gap-3 mr-2 cursor-pointer">
+                  <button
+                    onClick={handleProfileClick}
+                    className="flex items-center gap-3 mr-2 hover:opacity-80 transition-opacity focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 rounded-full"
+                  >
                     <Avatar className="h-8 w-8">
                       <AvatarImage src={profile?.avatar_url} />
                       <AvatarFallback>
@@ -81,18 +89,17 @@ const Navbar = () => {
                     <div className="text-sm">
                       {profile?.full_name || profile?.username || "User"}
                     </div>
-                  </div>
+                  </button>
                 </HoverCardTrigger>
                 <HoverCardContent className="w-48">
                   <div className="space-y-2">
-                    <Link to="/profile" className="flex items-center gap-2 text-sm hover:text-primary transition-colors">
+                    <button
+                      onClick={handleProfileClick}
+                      className="flex items-center gap-2 text-sm hover:text-primary transition-colors w-full text-left"
+                    >
                       <UserRound className="h-4 w-4" />
                       Profile & Settings
-                    </Link>
-                    {/* <Link to="/settings" className="flex items-center gap-2 text-sm hover:text-primary transition-colors">
-                      <Settings className="h-4 w-4" />
-                      Settings
-                    </Link> */}
+                    </button>
                     <button
                       onClick={handleSignOut}
                       className="flex items-center gap-2 text-sm text-destructive hover:text-destructive/80 transition-colors w-full text-left"

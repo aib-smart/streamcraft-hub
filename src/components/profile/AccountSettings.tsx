@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
@@ -12,7 +12,13 @@ import {
   Trash,
   CreditCard,
   Loader2,
+  ShieldAlert,
 } from "lucide-react";
+import {
+  Alert,
+  AlertDescription,
+  AlertTitle,
+} from "@/components/ui/alert";
 
 const AccountSettings = () => {
   const { toast } = useToast();
@@ -76,32 +82,43 @@ const AccountSettings = () => {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 max-w-3xl mx-auto">
       <Card>
         <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Bell className="h-5 w-5" />
-            Notifications
+          <CardTitle className="flex items-center gap-2 text-lg">
+            <Bell className="h-5 w-5 text-primary" />
+            Notification Preferences
           </CardTitle>
+          <CardDescription>
+            Manage how you want to receive notifications
+          </CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="flex items-center space-x-2">
+          <div className="flex items-center justify-between space-x-2">
+            <Label htmlFor="notifications" className="flex flex-col space-y-1">
+              <span>Email notifications</span>
+              <span className="font-normal text-sm text-muted-foreground">
+                Receive updates about your account activity
+              </span>
+            </Label>
             <Switch
               checked={notifications}
               onCheckedChange={setNotifications}
               id="notifications"
             />
-            <Label htmlFor="notifications">Enable email notifications</Label>
           </div>
         </CardContent>
       </Card>
 
       <Card>
         <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Lock className="h-5 w-5" />
-            Change Password
+          <CardTitle className="flex items-center gap-2 text-lg">
+            <Lock className="h-5 w-5 text-primary" />
+            Password Settings
           </CardTitle>
+          <CardDescription>
+            Update your password to keep your account secure
+          </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="space-y-2">
@@ -111,6 +128,7 @@ const AccountSettings = () => {
               type="password"
               value={currentPassword}
               onChange={(e) => setCurrentPassword(e.target.value)}
+              placeholder="Enter your current password"
             />
           </div>
           <div className="space-y-2">
@@ -120,6 +138,7 @@ const AccountSettings = () => {
               type="password"
               value={newPassword}
               onChange={(e) => setNewPassword(e.target.value)}
+              placeholder="Enter your new password"
             />
           </div>
           <Button
@@ -135,12 +154,22 @@ const AccountSettings = () => {
 
       <Card>
         <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <CreditCard className="h-5 w-5" />
-            Premium Status
+          <CardTitle className="flex items-center gap-2 text-lg">
+            <CreditCard className="h-5 w-5 text-primary" />
+            Premium Access
           </CardTitle>
+          <CardDescription>
+            Upgrade your account to access premium features
+          </CardDescription>
         </CardHeader>
-        <CardContent>
+        <CardContent className="space-y-4">
+          <Alert>
+            <ShieldAlert className="h-4 w-4" />
+            <AlertTitle>Premium Features</AlertTitle>
+            <AlertDescription>
+              Get access to exclusive content and features with our premium plan
+            </AlertDescription>
+          </Alert>
           <Button
             variant="outline"
             onClick={handlePremiumRequest}
@@ -152,14 +181,23 @@ const AccountSettings = () => {
         </CardContent>
       </Card>
 
-      <Card>
+      <Card className="border-destructive/50">
         <CardHeader>
-          <CardTitle className="flex items-center gap-2 text-destructive">
+          <CardTitle className="flex items-center gap-2 text-lg text-destructive">
             <Trash className="h-5 w-5" />
             Delete Account
           </CardTitle>
+          <CardDescription>
+            Permanently delete your account and all associated data
+          </CardDescription>
         </CardHeader>
         <CardContent>
+          <Alert variant="destructive" className="mb-4">
+            <AlertTitle>Warning</AlertTitle>
+            <AlertDescription>
+              This action cannot be undone. All your data will be permanently removed.
+            </AlertDescription>
+          </Alert>
           <Button
             variant="destructive"
             onClick={handleDeleteAccount}
