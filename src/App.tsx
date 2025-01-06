@@ -5,6 +5,8 @@ import Home from "./pages/Home";
 import Auth from "./pages/Auth";
 import Profile from "./pages/Profile";
 import Admin from "./pages/Admin";
+import Streams from "./pages/Streams";
+import StreamDetail from "./pages/StreamDetail";
 import ProtectedRoute from "./components/ProtectedRoute";
 import { Toaster } from "./components/ui/toaster";
 import { AuthProvider } from "./components/AuthProvider";
@@ -22,8 +24,10 @@ function App() {
             <Navbar />
             <main className="flex-grow">
               <Routes>
-                <Route path="/" element={<Home />} />
+                <Route path="/jstreamz" element={<Home />} />
                 <Route path="/auth" element={<Auth />} />
+                <Route path="/streams" element={<Streams />} />
+                <Route path="/stream/:streamId" element={<StreamDetail />} />
                 <Route
                   path="/profile"
                   element={

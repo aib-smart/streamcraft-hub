@@ -4,6 +4,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Button } from "@/components/ui/button";
 import { Loader2, Play, Clock, Users } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import Image from "@/components/Image";
 
 const Streams = () => {
   const { data: streams, isLoading, isError, error } = useQuery({
@@ -14,7 +15,7 @@ const Streams = () => {
         .select("*")
         .order("created_at", { ascending: false });
 
-      if (error) throw new Error(error.message);
+      if (error) throw error;
       return data || [];
     },
   });
@@ -22,7 +23,6 @@ const Streams = () => {
   const navigate = useNavigate();
 
   const handleStreamClick = (streamId: string) => {
-    // Navigate to the stream's detail page
     navigate(`/stream/${streamId}`);
   };
 
@@ -75,10 +75,13 @@ const Streams = () => {
               <CardDescription>{stream.description}</CardDescription>
             </CardHeader>
             <CardContent>
-              <div
-                className="aspect-video bg-muted rounded-md mb-4"
-                style={{ backgroundImage: `url(${stream.thumbnail_url})` }}
-              />
+              <div className="aspect-video bg-muted rounded-md mb-4 overflow-hidden">
+                <Image
+                  src={stream.thumbnail_url || "/placeholder.svg"}
+                  alt={stream.title}
+                  className="w-full h-full object-cover"
+                />
+              </div>
               <div className="flex items-center text-sm text-muted-foreground gap-4">
                 <span className="flex items-center">
                   <Users className="mr-1 h-4 w-4" />
@@ -86,7 +89,7 @@ const Streams = () => {
                 </span>
                 <span className="flex items-center">
                   <Clock className="mr-1 h-4 w-4" />
-                  {formatDuration(stream.duration)}
+                  {formatDuration(stream.duration || 0)}
                 </span>
               </div>
             </CardContent>
