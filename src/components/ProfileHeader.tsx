@@ -14,7 +14,7 @@ interface ProfileHeaderProps {
 const ProfileHeader = ({ profile, isPremium }: ProfileHeaderProps) => {
   return (
     <div className="flex items-center gap-6 mb-8">
-      <Avatar className="h-24 w-24">
+      <Avatar className="h-20 w-20">
         <AvatarImage src={profile?.avatar_url} />
         <AvatarFallback>
           <UserRound className="h-12 w-12" />
@@ -22,7 +22,7 @@ const ProfileHeader = ({ profile, isPremium }: ProfileHeaderProps) => {
       </Avatar>
       <div>
         <div className="flex items-center gap-3">
-          <h1 className="text-3xl font-bold">
+          <h1 className="text-2xl font-bold">
             {profile?.full_name || "Your Name"}
           </h1>
           <Badge variant={isPremium ? "default" : "secondary"} className="flex items-center gap-1">

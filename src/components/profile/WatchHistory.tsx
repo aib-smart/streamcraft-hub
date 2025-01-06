@@ -6,7 +6,7 @@ const WatchHistory = () => {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Watch History</CardTitle>
+        <CardTitle className="text-xl">Watch History</CardTitle>
       </CardHeader>
       <CardContent>
         <div className="space-y-4">

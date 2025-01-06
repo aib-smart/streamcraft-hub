@@ -23,6 +23,7 @@ import {
 const AccountSettings = () => {
   const { toast } = useToast();
   const [notifications, setNotifications] = useState(true);
+  const [pushNotify, setPushNotify] = useState(true);
   const [loading, setLoading] = useState(false);
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
@@ -105,6 +106,19 @@ const AccountSettings = () => {
               checked={notifications}
               onCheckedChange={setNotifications}
               id="notifications"
+            />
+          </div>
+          <div className="flex items-center justify-between space-x-2">
+            <Label htmlFor="notifications" className="flex flex-col space-y-1">
+              <span>Push notifications</span>
+              <span className="font-normal text-sm text-muted-foreground">
+                Receive push notifications in the browser
+              </span>
+            </Label>
+            <Switch
+              checked={pushNotify}
+              onCheckedChange={setPushNotify}
+              id="pushNotify"
             />
           </div>
         </CardContent>
