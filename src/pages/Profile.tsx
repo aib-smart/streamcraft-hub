@@ -2,14 +2,14 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/components/AuthProvider";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Loader2, UserRound, Settings, History, PlayCircle } from "lucide-react";
+import { Loader2, Settings, History, PlayCircle } from "lucide-react";
 import { useState } from "react";
-import { useToast } from "@/components/ui/use-toast";
+import { useToast } from "@/hooks/use-toast";
+import ProfileHeader from "@/components/ProfileHeader";
 
 const Profile = () => {
   const { user } = useAuth();
@@ -36,6 +36,15 @@ const Profile = () => {
         country: data?.country || "",
       });
       return data;
+    },
+    enabled: !!user,
+  });
+
+  const { data: isPremium } = useQuery({
+    queryKey: ["isPremium", user?.id],
+    queryFn: async () => {
+      // This is a placeholder. In a real app, you would check the user's premium status
+      return false;
     },
     enabled: !!user,
   });
@@ -85,22 +94,7 @@ const Profile = () => {
   return (
     <div className="container py-8 fade-in">
       <div className="max-w-4xl mx-auto">
-        <div className="flex items-center gap-6 mb-8">
-          <Avatar className="h-24 w-24">
-            <AvatarImage src={profile?.avatar_url} />
-            <AvatarFallback>
-              <UserRound className="h-12 w-12" />
-            </AvatarFallback>
-          </Avatar>
-          <div>
-            <h1 className="text-3xl font-bold mb-2">
-              {profile?.full_name || "Your Name"}
-            </h1>
-            <p className="text-muted-foreground">
-              @{profile?.username || "username"}
-            </p>
-          </div>
-        </div>
+        <ProfileHeader profile={profile} isPremium={isPremium} />
 
         <Tabs defaultValue="profile" className="space-y-6">
           <TabsList>

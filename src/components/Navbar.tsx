@@ -3,13 +3,18 @@ import { useAuth } from "./AuthProvider";
 import { Button } from "./ui/button";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
-import { Shield, UserRound } from "lucide-react";
+import { Shield, UserRound, Settings, LogOut } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { Tv } from 'lucide-react';
+import {
+  HoverCard,
+  HoverCardContent,
+  HoverCardTrigger,
+} from "@/components/ui/hover-card";
 
 const Navbar = () => {
   const { user } = useAuth();
-  const location = useLocation(); // Get the current location
+  const location = useLocation();
 
   const { data: isAdmin } = useQuery({
     queryKey: ["isAdmin", user?.id],
@@ -46,13 +51,12 @@ const Navbar = () => {
   return (
     <nav className="border-b">
       <div className="container mx-auto px-4 h-16 flex items-center justify-between">
-      <Link to="/jstreamz" className="font-semibold text-lg flex items-center gap-3 hover:text-primary transition-colors">
-        <div className="flex h-8 w-8 items-center justify-center rounded-md bg-primary text-white p-1">
-          <Tv className="h-5 w-5" />
-        </div>
-        <span className="text-xl md:text-2xl text-foreground">JStreamz</span>
-      </Link>
-
+        <Link to="/jstreamz" className="font-semibold text-lg flex items-center gap-3 hover:text-primary transition-colors">
+          <div className="flex h-8 w-8 items-center justify-center rounded-md bg-primary text-white p-1">
+            <Tv className="h-5 w-5" />
+          </div>
+          <span className="text-xl md:text-2xl text-foreground">JStreamz</span>
+        </Link>
 
         <div className="flex items-center gap-4">
           {user ? (
@@ -65,20 +69,40 @@ const Navbar = () => {
                   </Button>
                 </Link>
               )}
-              <div className="flex items-center gap-3 mr-2">
-                <Avatar className="h-8 w-8">
-                  <AvatarImage src={profile?.avatar_url} />
-                  <AvatarFallback>
-                    <UserRound className="h-4 w-4" />
-                  </AvatarFallback>
-                </Avatar>
-                <div className="text-sm">
-                  {profile?.full_name || profile?.username || "User"}
-                </div>
-              </div>
-              <Button variant="outline" size="sm" onClick={handleSignOut}>
-                Logout
-              </Button>
+              <HoverCard>
+                <HoverCardTrigger asChild>
+                  <div className="flex items-center gap-3 mr-2 cursor-pointer">
+                    <Avatar className="h-8 w-8">
+                      <AvatarImage src={profile?.avatar_url} />
+                      <AvatarFallback>
+                        <UserRound className="h-4 w-4" />
+                      </AvatarFallback>
+                    </Avatar>
+                    <div className="text-sm">
+                      {profile?.full_name || profile?.username || "User"}
+                    </div>
+                  </div>
+                </HoverCardTrigger>
+                <HoverCardContent className="w-48">
+                  <div className="space-y-2">
+                    <Link to="/profile" className="flex items-center gap-2 text-sm hover:text-primary transition-colors">
+                      <UserRound className="h-4 w-4" />
+                      Profile
+                    </Link>
+                    <Link to="/settings" className="flex items-center gap-2 text-sm hover:text-primary transition-colors">
+                      <Settings className="h-4 w-4" />
+                      Settings
+                    </Link>
+                    <button
+                      onClick={handleSignOut}
+                      className="flex items-center gap-2 text-sm text-destructive hover:text-destructive/80 transition-colors w-full text-left"
+                    >
+                      <LogOut className="h-4 w-4" />
+                      Logout
+                    </button>
+                  </div>
+                </HoverCardContent>
+              </HoverCard>
             </>
           ) : (
             location.pathname !== "/auth" && location.pathname !== "/" && (
