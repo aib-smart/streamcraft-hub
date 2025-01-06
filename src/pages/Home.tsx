@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
-import { Loader2 } from "lucide-react";
+// import { Loader2 } from "lucide-react";
 
 const Home = () => {
   const { data: featuredStreams, isLoading } = useQuery({
@@ -70,7 +70,7 @@ const Home = () => {
       </div>
 
       {/* Featured Streams Section */}
-      <div className="container mx-auto px-4 lg:px-8 mt-16">
+      {/* <div className="container mx-auto px-4 lg:px-8 mt-16">
         <h2 className="text-2xl font-bold mb-8">Featured Streams</h2>
         {isLoading ? (
           <div className="flex justify-center">
@@ -108,7 +108,7 @@ const Home = () => {
             </Button>
           </Link>
         </div>
-      </div>
+      </div> */}
     </div>
   );
 };

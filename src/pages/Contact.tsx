@@ -30,8 +30,8 @@ const Contact = () => {
     <div className="container py-8 fade-in">
       <div className="max-w-5xl mx-auto">
         <div className="text-center mb-12">
-          <h1 className="text-4xl font-bold mb-4">Contact Us</h1>
-          <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+          <h2 className="text-4xl font-bold mb-4">Contact Us</h2>
+          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
             Have questions? We'd love to hear from you. Send us a message and we'll respond as soon as possible.
           </p>
         </div>
@@ -45,8 +45,8 @@ const Contact = () => {
               <CardDescription>Drop us a line anytime</CardDescription>
             </CardHeader>
             <CardContent>
-              <a href="mailto:contact@jstreams.com" className="text-primary hover:underline">
-                contact@jstreams.com
+              <a href="mailto:hello@jstreamz.media" className="text-primary hover:underline">
+                hello@jstreamz.media
               </a>
             </CardContent>
           </Card>
@@ -59,8 +59,8 @@ const Contact = () => {
               <CardDescription>Mon-Fri from 8am to 5pm</CardDescription>
             </CardHeader>
             <CardContent>
-              <a href="tel:+1234567890" className="text-primary hover:underline">
-                +1 (234) 567-890
+              <a href="tel:+233244567890" className="text-primary hover:underline">
+                +233 (2445) 567-890
               </a>
             </CardContent>
           </Card>

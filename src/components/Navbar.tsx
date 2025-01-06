@@ -98,7 +98,7 @@ const Navbar = () => {
                       className="flex items-center gap-2 text-sm hover:text-primary transition-colors w-full text-left"
                     >
                       <UserRound className="h-4 w-4" />
-                      Profile & Settings
+                      Account Settings
                     </button>
                     <button
                       onClick={handleSignOut}

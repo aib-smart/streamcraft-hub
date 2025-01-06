@@ -38,7 +38,7 @@ const Footer = () => {
                       to="/profile"
                       className="text-muted-foreground hover:text-primary text-[14px] sm:text-base"
                     >
-                      My Profile
+                      Account Settings
                     </Link>
                   </li>
                 </>
