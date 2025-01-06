@@ -108,7 +108,7 @@ const AccountSettings = () => {
               id="notifications"
             />
           </div>
-          <div className="flex items-center justify-between space-x-2">
+          <div className="flex items-center justify-between space-y-4">
             <Label htmlFor="notifications" className="flex flex-col space-y-1">
               <span>Push notifications</span>
               <span className="font-normal text-sm text-muted-foreground">

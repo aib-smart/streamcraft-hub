@@ -79,7 +79,7 @@ const Navbar = () => {
                 <HoverCardTrigger asChild>
                   <button
                     onClick={handleProfileClick}
-                    className="flex items-center gap-3 mr-2 hover:opacity-80 transition-opacity focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 rounded-full"
+                    className="flex items-center gap-3 mr-2 hover:opacity-80 hover:bg-white/20 transition-opacity focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 rounded-full"
                   >
                     <Avatar className="h-8 w-8">
                       <AvatarImage src={profile?.avatar_url} />
