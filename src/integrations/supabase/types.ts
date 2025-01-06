@@ -42,10 +42,11 @@ export type Database = {
       streams: {
         Row: {
           created_at: string
-          creator_id: string
+          creator_id: string | null
           description: string | null
           duration: number | null
           id: string
+          stream_url: string | null
           thumbnail_url: string | null
           title: string
           updated_at: string
@@ -53,10 +54,11 @@ export type Database = {
         }
         Insert: {
           created_at?: string
-          creator_id: string
+          creator_id?: string | null
           description?: string | null
           duration?: number | null
           id?: string
+          stream_url?: string | null
           thumbnail_url?: string | null
           title: string
           updated_at?: string
@@ -64,10 +66,11 @@ export type Database = {
         }
         Update: {
           created_at?: string
-          creator_id?: string
+          creator_id?: string | null
           description?: string | null
           duration?: number | null
           id?: string
+          stream_url?: string | null
           thumbnail_url?: string | null
           title?: string
           updated_at?: string
