@@ -34,21 +34,20 @@ const Auth = () => {
             variables: {
               default: {
                 colors: {
-                  brand: 'rgb(0, 123, 255)',  // Blue color
-                  brandAccent: 'rgb(255, 255, 255)',  // White color
-                  brandButton: 'rgb(0, 123, 255)', // Blue button
-                  brandButtonText: 'rgb(255, 255, 255)', // White button text
-                  brandButtonHoverText: 'rgb(64, 88, 114)', // White text on hover
-                  brandButtonHover: 'rgb(4, 76, 154)', // Slightly darker blue on hover
-                  inputText: 'rgb(0, 0, 0)', // Black input text
-                  inputBackground: 'rgb(255, 255, 255)', // White input background
-                  inputBorder: 'rgb(200, 200, 200)', // Light grey input border
-                  inputFocusBorder: 'rgb(0, 123, 255)', // Blue border on focus
-                  inputFocusBackground: 'rgb(255, 255, 255)', // White background on focus
-                  inputFocusText: 'rgb(0, 0, 0)', // Black text on focus
-                  linkText: 'rgb(0, 123, 255)', // Blue text for links
-                  linkTextHover: 'rgb(8, 92, 182)', // Darker blue for links on hover
-                },
+                  brand: 'rgb(0, 123, 255)',
+                  brandAccent: 'rgb(255, 255, 255)',
+                  defaultButtonBackground: 'rgb(0, 123, 255)',
+                  defaultButtonText: 'rgb(255, 255, 255)',
+                  defaultButtonBackgroundHover: 'rgb(4, 76, 154)',
+                  inputText: 'rgb(0, 0, 0)',
+                  inputBackground: 'rgb(255, 255, 255)',
+                  inputBorder: 'rgb(200, 200, 200)',
+                  inputBorderFocus: 'rgb(0, 123, 255)',
+                  inputBackgroundFocus: 'rgb(255, 255, 255)',
+                  inputTextFocus: 'rgb(0, 0, 0)',
+                  anchorTextColor: 'rgb(0, 123, 255)',
+                  anchorTextHoverColor: 'rgb(8, 92, 182)',
+                }
               },
             },
           }}

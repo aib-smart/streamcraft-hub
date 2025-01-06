@@ -1,10 +1,10 @@
 import { useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
-import { Loader2 } from "lucide-react"; // Ensure you import Loader2 if you're using it for loading state
+import { Loader2 } from "lucide-react";
 
 const StreamPage = () => {
-  const { id } = useParams(); // Get the stream ID from the URL
+  const { id } = useParams();
 
   const { data: stream, isLoading, error } = useQuery({
     queryKey: ["stream", id],
@@ -13,7 +13,7 @@ const StreamPage = () => {
         .from("streams")
         .select("*")
         .eq("id", id)
-        .single(); // Fetch the single stream by its ID
+        .single();
 
       if (error) throw new Error(error.message);
       return data;
@@ -46,14 +46,15 @@ const StreamPage = () => {
           </div>
 
           <div className="relative aspect-video bg-black">
-            {/* Embed the video player here */}
-            <iframe
-              src={stream.video_url} // Assuming stream.video_url contains the video URL
-              frameBorder="0"
-              allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-              allowFullScreen
-              className="w-full h-full"
-            />
+            {stream.stream_url && (
+              <iframe
+                src={stream.stream_url}
+                frameBorder="0"
+                allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+                className="w-full h-full"
+              />
+            )}
           </div>
         </div>
       </section>
