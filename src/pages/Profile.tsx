@@ -1,15 +1,14 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/components/AuthProvider";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Loader2, Settings, History, PlayCircle } from "lucide-react";
+import { Loader2 } from "lucide-react";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 import ProfileHeader from "@/components/ProfileHeader";
+import ProfileInformation from "@/components/profile/ProfileInformation";
+import AccountSettings from "@/components/profile/AccountSettings";
+import WatchHistory from "@/components/profile/WatchHistory";
 
 const Profile = () => {
   const { user } = useAuth();
@@ -99,123 +98,27 @@ const Profile = () => {
         <Tabs defaultValue="profile" className="space-y-6">
           <TabsList>
             <TabsTrigger value="profile">Profile</TabsTrigger>
-            <TabsTrigger value="settings">Settings</TabsTrigger>
+            <TabsTrigger value="settings">Account Settings</TabsTrigger>
             <TabsTrigger value="history">History</TabsTrigger>
           </TabsList>
 
           <TabsContent value="profile">
-            <Card>
-              <CardHeader>
-                <CardTitle>Profile Information</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="fullName">Full Name</Label>
-                    <Input
-                      id="fullName"
-                      value={isEditing ? editedProfile.full_name : profile?.full_name || ""}
-                      onChange={(e) =>
-                        setEditedProfile({
-                          ...editedProfile,
-                          full_name: e.target.value,
-                        })
-                      }
-                      readOnly={!isEditing}
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="username">Username</Label>
-                    <Input
-                      id="username"
-                      value={isEditing ? editedProfile.username : profile?.username || ""}
-                      onChange={(e) =>
-                        setEditedProfile({
-                          ...editedProfile,
-                          username: e.target.value,
-                        })
-                      }
-                      readOnly={!isEditing}
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="country">Country</Label>
-                    <Input
-                      id="country"
-                      value={isEditing ? editedProfile.country : profile?.country || ""}
-                      onChange={(e) =>
-                        setEditedProfile({
-                          ...editedProfile,
-                          country: e.target.value,
-                        })
-                      }
-                      readOnly={!isEditing}
-                    />
-                  </div>
-                </div>
-                <Button
-                  variant="outline"
-                  className="mt-4"
-                  onClick={handleEditToggle}
-                  disabled={updateProfileMutation.isPending}
-                >
-                  {updateProfileMutation.isPending ? (
-                    <Loader2 className="h-4 w-4 animate-spin mr-2" />
-                  ) : (
-                    <Settings className="mr-2 h-4 w-4" />
-                  )}
-                  {isEditing ? "Save Profile" : "Edit Profile"}
-                </Button>
-              </CardContent>
-            </Card>
+            <ProfileInformation
+              profile={profile}
+              isEditing={isEditing}
+              editedProfile={editedProfile}
+              setEditedProfile={setEditedProfile}
+              handleEditToggle={handleEditToggle}
+              updateProfileMutation={updateProfileMutation}
+            />
           </TabsContent>
 
           <TabsContent value="settings">
-            <Card>
-              <CardHeader>
-                <CardTitle>Account Settings</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-muted-foreground">
-                  Manage your account settings and preferences here.
-                </p>
-              </CardContent>
-            </Card>
+            <AccountSettings />
           </TabsContent>
 
           <TabsContent value="history">
-            <Card>
-              <CardHeader>
-                <CardTitle>Watch History</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  {[
-                    "Tech Talk #45",
-                    "Nature Live: Forest Edition",
-                    "Cooking Show: Italian Night",
-                  ].map((stream) => (
-                    <div
-                      key={stream}
-                      className="flex items-center justify-between py-2 border-b"
-                    >
-                      <div className="flex items-center gap-4">
-                        <div className="w-32 h-20 bg-muted rounded" />
-                        <div>
-                          <h3 className="font-medium">{stream}</h3>
-                          <p className="text-sm text-muted-foreground">
-                            Watched 2 days ago
-                          </p>
-                        </div>
-                      </div>
-                      <Button variant="ghost" size="sm">
-                        <PlayCircle className="h-4 w-4" />
-                      </Button>
-                    </div>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
+            <WatchHistory />
           </TabsContent>
         </Tabs>
       </div>
