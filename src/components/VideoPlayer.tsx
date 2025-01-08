@@ -52,18 +52,13 @@ const VideoPlayer = ({ url }: VideoPlayerProps) => {
   }
 
   if (isHLSStream(url)) {
-    // For HLS streams, we use the video tag with HLS.js if available
     return (
-      <video
+      <iframe
         className="w-full aspect-video rounded-lg"
-        controls
-        autoPlay
-        playsInline
-        crossOrigin="anonymous"
-      >
-        <source src={url} type="application/x-mpegURL" />
-        Your browser does not support the video tag.
-      </video>
+        src={`https://player.castr.com/live?url=${encodeURIComponent(url)}`}
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowFullScreen
+      />
     );
   }
 
