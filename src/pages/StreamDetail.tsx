@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
-import { Button } from "@/components/ui/button";
 import { Loader2 } from "lucide-react";
+import VideoPlayer from "@/components/VideoPlayer";
 
 const StreamDetail = () => {
   const { streamId } = useParams<{ streamId: string }>();
@@ -54,23 +54,11 @@ const StreamDetail = () => {
         <p className="text-xl text-muted-foreground">{stream.description}</p>
       </div>
 
-      {/* Styled Video Player */}
       <div className="relative mb-8 overflow-hidden rounded-xl bg-black shadow-lg">
-        {/* <div className="absolute inset-0 bg-black/50 z-10 flex justify-center items-center">
-          <Button className="text-white bg-primary hover:bg-primary-dark shadow-md">Watch Now</Button>
-        </div> */}
-        <iframe
-          src={`${stream.stream_url}?autoplay=1`}  // Dynamic stream URL
-          className="w-full h-[60vh] sm:h-[70vh] md:h-[80vh] lg:h-[90vh] rounded-md"
-          frameBorder="0"
-          allow="autoplay; fullscreen"
-          allowFullScreen
-        />
+        {stream.stream_url && (
+          <VideoPlayer url={stream.stream_url} />
+        )}
       </div>
-
-      {/* <Button variant="secondary" size="lg">
-        Watch Stream
-      </Button> */}
     </div>
   );
 };

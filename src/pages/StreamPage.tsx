@@ -2,6 +2,7 @@ import { useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { Loader2 } from "lucide-react";
+import VideoPlayer from "@/components/VideoPlayer";
 
 const StreamPage = () => {
   const { id } = useParams();
@@ -45,15 +46,9 @@ const StreamPage = () => {
             <p className="text-xl text-muted-foreground mb-8">{stream.description}</p>
           </div>
 
-          <div className="relative aspect-video bg-black">
+          <div className="relative aspect-video bg-black rounded-lg overflow-hidden">
             {stream.stream_url && (
-              <iframe
-                src={stream.stream_url}
-                frameBorder="0"
-                allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-                allowFullScreen
-                className="w-full h-full"
-              />
+              <VideoPlayer url={stream.stream_url} />
             )}
           </div>
         </div>
