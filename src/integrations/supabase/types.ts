@@ -41,6 +41,7 @@ export type Database = {
       }
       streams: {
         Row: {
+          channel_name: string | null
           created_at: string
           creator_id: string | null
           description: string | null
@@ -53,6 +54,7 @@ export type Database = {
           viewer_count: number | null
         }
         Insert: {
+          channel_name?: string | null
           created_at?: string
           creator_id?: string | null
           description?: string | null
@@ -65,6 +67,7 @@ export type Database = {
           viewer_count?: number | null
         }
         Update: {
+          channel_name?: string | null
           created_at?: string
           creator_id?: string | null
           description?: string | null

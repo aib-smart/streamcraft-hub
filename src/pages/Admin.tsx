@@ -6,6 +6,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import UserManagement from "@/components/admin/UserManagement";
 import ProfileManagement from "@/components/admin/ProfileManagement";
+import StreamManagement from "@/components/admin/StreamManagement";
 import { Shield } from "lucide-react";
 
 const Admin = () => {
@@ -50,11 +51,15 @@ const Admin = () => {
         <h1 className="text-2xl font-bold">Admin Dashboard</h1>
       </div>
       
-      <Tabs defaultValue="users" className="w-full">
+      <Tabs defaultValue="streams" className="w-full">
         <TabsList>
+          <TabsTrigger value="streams">Stream Management</TabsTrigger>
           <TabsTrigger value="users">User Management</TabsTrigger>
           <TabsTrigger value="profiles">Profile Management</TabsTrigger>
         </TabsList>
+        <TabsContent value="streams">
+          <StreamManagement />
+        </TabsContent>
         <TabsContent value="users">
           <UserManagement />
         </TabsContent>
