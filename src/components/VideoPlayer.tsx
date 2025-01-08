@@ -24,6 +24,11 @@ const VideoPlayer = ({ url }: VideoPlayerProps) => {
     return url.toLowerCase().endsWith('.m3u8');
   };
 
+  // Function to determine if URL is an embedded player
+  const isEmbeddedPlayer = (url: string): boolean => {
+    return url.includes("embed") || url.includes(".php");
+  };
+
   if (isYouTubeUrl(url)) {
     return (
       <iframe
@@ -35,14 +40,26 @@ const VideoPlayer = ({ url }: VideoPlayerProps) => {
     );
   }
 
+  if (isEmbeddedPlayer(url)) {
+    return (
+      <iframe
+        className="w-full aspect-video rounded-lg"
+        src={url}
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowFullScreen
+      />
+    );
+  }
+
   if (isHLSStream(url)) {
-    // For HLS streams, we use the video tag with type="application/x-mpegURL"
+    // For HLS streams, we use the video tag with HLS.js if available
     return (
       <video
         className="w-full aspect-video rounded-lg"
         controls
         autoPlay
         playsInline
+        crossOrigin="anonymous"
       >
         <source src={url} type="application/x-mpegURL" />
         Your browser does not support the video tag.
