@@ -7,6 +7,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import UserManagement from "@/components/admin/UserManagement";
 import ProfileManagement from "@/components/admin/ProfileManagement";
 import StreamManagement from "@/components/admin/StreamManagement";
+import UserPresence from "@/components/admin/UserPresence";
 import { Shield } from "lucide-react";
 
 const Admin = () => {
@@ -56,6 +57,7 @@ const Admin = () => {
           <TabsTrigger value="streams">Stream Management</TabsTrigger>
           <TabsTrigger value="users">User Management</TabsTrigger>
           <TabsTrigger value="profiles">Profile Management</TabsTrigger>
+          <TabsTrigger value="presence">Online Users</TabsTrigger>
         </TabsList>
         <TabsContent value="streams">
           <StreamManagement />
@@ -65,6 +67,9 @@ const Admin = () => {
         </TabsContent>
         <TabsContent value="profiles">
           <ProfileManagement />
+        </TabsContent>
+        <TabsContent value="presence">
+          <UserPresence />
         </TabsContent>
       </Tabs>
     </div>
