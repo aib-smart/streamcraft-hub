@@ -52,11 +52,11 @@ const VideoPlayer = ({ url }: VideoPlayerProps) => {
   }
 
   if (isHLSStream(url)) {
-    // Using JWPlayer's free HLS player service which has better compatibility
+    // Using Clappr's HLS player which has better compatibility
     return (
       <iframe
         className="w-full aspect-video rounded-lg"
-        src={`https://cdn.jwplayer.com/players/default-mediaplayer.html?file=${encodeURIComponent(url)}`}
+        src={`https://clappr.io/demo/#src=${encodeURIComponent(url)}`}
         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
         allowFullScreen
       />
