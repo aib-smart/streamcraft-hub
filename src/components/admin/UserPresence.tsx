@@ -11,15 +11,14 @@ import {
 } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { Loader2 } from "lucide-react";
+import { RealtimePresenceState } from "@supabase/supabase-js";
 
 type UserPresence = {
   user_id: string;
   online_at: string;
 };
 
-type PresenceState = {
-  [key: string]: UserPresence[];
-};
+type PresenceState = RealtimePresenceState<UserPresence>;
 
 const UserPresence = () => {
   const [presenceState, setPresenceState] = useState<PresenceState>({});
@@ -42,7 +41,7 @@ const UserPresence = () => {
     const channel = supabase.channel('online-users')
       .on('presence', { event: 'sync' }, () => {
         const newState = channel.presenceState();
-        setPresenceState(newState);
+        setPresenceState(newState as PresenceState);
       })
       .on('presence', { event: 'join' }, ({ key, newPresences }) => {
         console.log('User joined:', key, newPresences);
@@ -103,7 +102,7 @@ const UserPresence = () => {
               </TableCell>
               <TableCell>
                 <Badge
-                  variant={isUserOnline(user.user_id) ? "success" : "secondary"}
+                  variant={isUserOnline(user.user_id) ? "default" : "secondary"}
                 >
                   {isUserOnline(user.user_id) ? "Online" : "Offline"}
                 </Badge>
