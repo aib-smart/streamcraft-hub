@@ -52,10 +52,11 @@ const VideoPlayer = ({ url }: VideoPlayerProps) => {
   }
 
   if (isHLSStream(url)) {
+    // Using JWPlayer's free HLS player service which has better compatibility
     return (
       <iframe
         className="w-full aspect-video rounded-lg"
-        src={`https://player.castr.com/live?url=${encodeURIComponent(url)}`}
+        src={`https://cdn.jwplayer.com/players/default-mediaplayer.html?file=${encodeURIComponent(url)}`}
         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
         allowFullScreen
       />
