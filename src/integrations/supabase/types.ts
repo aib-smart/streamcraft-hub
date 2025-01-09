@@ -121,6 +121,45 @@ export type Database = {
           },
         ]
       }
+      watch_history: {
+        Row: {
+          id: string
+          stream_id: string
+          user_id: string
+          watch_duration: number | null
+          watched_at: string | null
+        }
+        Insert: {
+          id?: string
+          stream_id: string
+          user_id: string
+          watch_duration?: number | null
+          watched_at?: string | null
+        }
+        Update: {
+          id?: string
+          stream_id?: string
+          user_id?: string
+          watch_duration?: number | null
+          watched_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "watch_history_stream_id_fkey"
+            columns: ["stream_id"]
+            isOneToOne: false
+            referencedRelation: "streams"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "watch_history_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
