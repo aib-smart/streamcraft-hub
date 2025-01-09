@@ -18,10 +18,8 @@ type UserPresence = {
   online_at: string;
 };
 
-type PresenceState = RealtimePresenceState<UserPresence>;
-
 const UserPresence = () => {
-  const [presenceState, setPresenceState] = useState<PresenceState>({});
+  const [presenceState, setPresenceState] = useState<Record<string, UserPresence[]>>({});
 
   const { data: users, isLoading } = useQuery({
     queryKey: ["users"],
@@ -37,11 +35,10 @@ const UserPresence = () => {
   });
 
   useEffect(() => {
-    // Subscribe to presence channel
     const channel = supabase.channel('online-users')
       .on('presence', { event: 'sync' }, () => {
-        const newState = channel.presenceState();
-        setPresenceState(newState as PresenceState);
+        const newState = channel.presenceState<UserPresence>();
+        setPresenceState(newState);
       })
       .on('presence', { event: 'join' }, ({ key, newPresences }) => {
         console.log('User joined:', key, newPresences);
