@@ -1,6 +1,7 @@
 import { TableCell, TableRow } from "@/components/ui/table";
-import { PresenceIndicator } from "./PresenceIndicator";
 import { Database } from "@/integrations/supabase/types";
+import { format } from "date-fns";
+import { PresenceIndicator } from "./PresenceIndicator";
 
 type Profile = Database["public"]["Tables"]["profiles"]["Row"];
 
@@ -12,23 +13,20 @@ interface UserPresenceRowProps {
   isOnline: boolean;
 }
 
-export const UserPresenceRow = ({ user, isOnline }: UserPresenceRowProps) => (
-  <TableRow key={user.user_id}>
-    <TableCell>
-      <div className="flex flex-col">
-        <span className="font-medium">
-          {user.profiles?.username || "No username"}
-        </span>
-        <span className="text-sm text-muted-foreground">
-          {user.profiles?.full_name || "No name"}
-        </span>
-      </div>
-    </TableCell>
-    <TableCell>
-      <PresenceIndicator isOnline={isOnline} />
-    </TableCell>
-    <TableCell>
-      {isOnline ? "Currently Online" : "Not Available"}
-    </TableCell>
-  </TableRow>
-);
+export const UserPresenceRow = ({ user, isOnline }: UserPresenceRowProps) => {
+  return (
+    <TableRow>
+      <TableCell>
+        <div className="flex items-center gap-2">
+          <span>{user.profiles.username || "Anonymous"}</span>
+        </div>
+      </TableCell>
+      <TableCell>
+        <PresenceIndicator isOnline={isOnline} />
+      </TableCell>
+      <TableCell className="text-muted-foreground">
+        {format(new Date(), "PPp")}
+      </TableCell>
+    </TableRow>
+  );
+};

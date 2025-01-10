@@ -1,51 +1,96 @@
-import { useEffect } from 'react';
-import { supabase } from '@/integrations/supabase/client';
-import { useAuth } from '@/components/AuthProvider';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { toast } from '@/hooks/use-toast';
+import { useAuth } from "@/components/AuthProvider";
+import { supabase } from "@/integrations/supabase/client";
+import { useToast } from "@/hooks/use-toast";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 
-export const useWatchHistory = (streamId: string) => {
+export const useWatchHistory = () => {
   const { user } = useAuth();
+  const { toast } = useToast();
   const queryClient = useQueryClient();
 
-  const { mutate: recordWatch } = useMutation({
-    mutationFn: async () => {
-      if (!user) return;
-      
+  const { data: watchHistory, isLoading } = useQuery({
+    queryKey: ["watchHistory", user?.id],
+    queryFn: async () => {
+      if (!user) return [];
       const { data, error } = await supabase
-        .from('watch_history')
-        .upsert(
-          {
-            user_id: user.id,
-            stream_id: streamId,
-            watched_at: new Date().toISOString(),
-          },
-          {
-            onConflict: 'user_id,stream_id',
-          }
-        );
+        .from("watch_history")
+        .select(`
+          *,
+          stream:streams(
+            id,
+            title,
+            thumbnail_url,
+            stream_url
+          )
+        `)
+        .eq("user_id", user.id)
+        .order("watched_at", { ascending: false });
 
-      if (error) {
-        toast({
-          title: "Error",
-          description: "Failed to record watch history",
-          variant: "destructive",
-        });
-        throw error;
-      }
-      
+      if (error) throw error;
       return data;
     },
+    enabled: !!user,
+  });
+
+  const addToHistory = useMutation({
+    mutationFn: async ({ streamId, duration }: { streamId: string; duration: number }) => {
+      if (!user) throw new Error("User not authenticated");
+      const { error } = await supabase
+        .from("watch_history")
+        .insert({
+          user_id: user.id,
+          stream_id: streamId,
+          watch_duration: duration,
+        });
+      if (error) throw error;
+    },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['watchHistory'] });
+      queryClient.invalidateQueries({ queryKey: ["watchHistory", user?.id] });
+      toast({
+        title: "Success",
+        description: "Watch history updated",
+      });
+    },
+    onError: (error) => {
+      toast({
+        title: "Error",
+        description: "Failed to update watch history",
+        variant: "destructive",
+      });
+      console.error("Watch history error:", error);
     },
   });
 
-  useEffect(() => {
-    if (user && streamId) {
-      recordWatch();
-    }
-  }, [user, streamId]);
+  const clearHistory = useMutation({
+    mutationFn: async () => {
+      if (!user) throw new Error("User not authenticated");
+      const { error } = await supabase
+        .from("watch_history")
+        .delete()
+        .eq("user_id", user.id);
+      if (error) throw error;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["watchHistory", user?.id] });
+      toast({
+        title: "Success",
+        description: "Watch history cleared",
+      });
+    },
+    onError: (error) => {
+      toast({
+        title: "Error",
+        description: "Failed to clear watch history",
+        variant: "destructive",
+      });
+      console.error("Clear history error:", error);
+    },
+  });
 
-  return { recordWatch };
+  return {
+    watchHistory,
+    isLoading,
+    addToHistory,
+    clearHistory,
+  };
 };

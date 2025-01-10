@@ -1,26 +1,15 @@
 import { useState } from "react";
-import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
-import {
-  Bell,
-  Lock,
-  Trash,
-  CreditCard,
-  Loader2,
-  ShieldAlert,
-} from "lucide-react";
-import {
-  Alert,
-  AlertDescription,
-  AlertTitle,
-} from "@/components/ui/alert";
+import { Bell, Lock, Trash, CreditCard, Loader2, ShieldAlert } from "lucide-react";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { useAuth } from "@/components/AuthProvider";
-import { useQuery } from "@tanstack/react-query";
+import { useNotificationSettings } from "@/hooks/useNotificationSettings";
+import { useWatchHistory } from "@/hooks/useWatchHistory";
 
 const AccountSettings = () => {
   const { toast } = useToast();
@@ -28,45 +17,9 @@ const AccountSettings = () => {
   const [loading, setLoading] = useState(false);
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
-
-  const { data: notificationSettings } = useQuery({
-    queryKey: ["notificationSettings", user?.id],
-    queryFn: async () => {
-      if (!user) return null;
-      const { data } = await supabase
-        .from("notification_settings")
-        .select("*")
-        .eq("user_id", user.id)
-        .single();
-      return data;
-    },
-    enabled: !!user,
-  });
-
-  const updateNotificationSettings = async (
-    settings: Partial<typeof notificationSettings>
-  ) => {
-    if (!user) return;
-    setLoading(true);
-    const { error } = await supabase
-      .from("notification_settings")
-      .update(settings)
-      .eq("user_id", user.id);
-
-    if (error) {
-      toast({
-        title: "Error",
-        description: "Failed to update notification settings",
-        variant: "destructive",
-      });
-    } else {
-      toast({
-        title: "Success",
-        description: "Notification settings updated successfully",
-      });
-    }
-    setLoading(false);
-  };
+  
+  const { settings, updateSettings } = useNotificationSettings();
+  const { clearHistory } = useWatchHistory();
 
   const handlePasswordChange = async () => {
     if (!currentPassword || !newPassword) {
@@ -135,37 +88,39 @@ const AccountSettings = () => {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="flex items-center justify-between space-x-2">
-            <Label htmlFor="notifications" className="flex flex-col space-y-1">
-              <span>Email notifications</span>
-              <span className="font-normal text-sm text-muted-foreground">
-                Receive updates about your account activity
-              </span>
-            </Label>
-            <Switch
-              checked={notificationSettings?.email_notifications ?? true}
-              onCheckedChange={(checked) =>
-                updateNotificationSettings({ email_notifications: checked })
-              }
-              id="notifications"
-              disabled={loading}
-            />
-          </div>
-          <div className="flex items-center justify-between space-y-4">
-            <Label htmlFor="pushNotify" className="flex flex-col space-y-1">
-              <span>Push notifications</span>
-              <span className="font-normal text-sm text-muted-foreground">
-                Receive push notifications in the browser
-              </span>
-            </Label>
-            <Switch
-              checked={notificationSettings?.push_notifications ?? true}
-              onCheckedChange={(checked) =>
-                updateNotificationSettings({ push_notifications: checked })
-              }
-              id="pushNotify"
-              disabled={loading}
-            />
+          <div className="space-y-4">
+            <div className="flex items-center justify-between">
+              <Label htmlFor="email-notifications" className="flex flex-col space-y-1">
+                <span>Email notifications</span>
+                <span className="font-normal text-sm text-muted-foreground">
+                  Receive updates about your account activity
+                </span>
+              </Label>
+              <Switch
+                id="email-notifications"
+                checked={settings?.email_notifications ?? true}
+                onCheckedChange={(checked) =>
+                  updateSettings.mutate({ email_notifications: checked })
+                }
+                disabled={loading}
+              />
+            </div>
+            <div className="flex items-center justify-between">
+              <Label htmlFor="push-notifications" className="flex flex-col space-y-1">
+                <span>Push notifications</span>
+                <span className="font-normal text-sm text-muted-foreground">
+                  Receive push notifications in the browser
+                </span>
+              </Label>
+              <Switch
+                id="push-notifications"
+                checked={settings?.push_notifications ?? true}
+                onCheckedChange={(checked) =>
+                  updateSettings.mutate({ push_notifications: checked })
+                }
+                disabled={loading}
+              />
+            </div>
           </div>
         </CardContent>
       </Card>
@@ -201,11 +156,7 @@ const AccountSettings = () => {
               placeholder="Enter your new password"
             />
           </div>
-          <Button
-            onClick={handlePasswordChange}
-            disabled={loading}
-            className="w-full"
-          >
+          <Button onClick={handlePasswordChange} disabled={loading} className="w-full">
             {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
             Update Password
           </Button>
@@ -216,27 +167,27 @@ const AccountSettings = () => {
         <CardHeader>
           <CardTitle className="flex items-center gap-2 text-lg">
             <CreditCard className="h-5 w-5 text-primary" />
-            Premium Access
+            Watch History
           </CardTitle>
           <CardDescription>
-            Upgrade your account to access premium features
+            Manage your watch history and preferences
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
           <Alert>
             <ShieldAlert className="h-4 w-4" />
-            <AlertTitle>Premium Features</AlertTitle>
+            <AlertTitle>Watch History</AlertTitle>
             <AlertDescription>
-              Get access to exclusive content and features with our premium plan
+              Clear your watch history to remove all watched content records
             </AlertDescription>
           </Alert>
           <Button
             variant="outline"
-            onClick={handlePremiumRequest}
+            onClick={() => clearHistory.mutate()}
             disabled={loading}
             className="w-full"
           >
-            Request Premium Access
+            Clear Watch History
           </Button>
         </CardContent>
       </Card>

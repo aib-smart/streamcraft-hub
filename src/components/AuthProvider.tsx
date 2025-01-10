@@ -28,6 +28,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    // Handle auth state
     supabase.auth.getSession().then(({ data: { session } }) => {
       setSession(session);
       setUser(session?.user ?? null);
@@ -40,8 +41,32 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       setLoading(false);
     });
 
+    // Handle presence
+    if (user) {
+      const channel = supabase.channel('online-users')
+        .on('presence', { event: 'sync' }, () => {
+          console.log('Presence sync');
+        })
+        .on('presence', { event: 'join' }, ({ key, newPresences }) => {
+          console.log('Join', key, newPresences);
+        })
+        .on('presence', { event: 'leave' }, ({ key, leftPresences }) => {
+          console.log('Leave', key, leftPresences);
+        })
+        .subscribe(async (status) => {
+          if (status === 'SUBSCRIBED') {
+            await channel.track({ user_id: user.id, online_at: new Date().toISOString() });
+          }
+        });
+
+      return () => {
+        subscription.unsubscribe();
+        channel.unsubscribe();
+      };
+    }
+
     return () => subscription.unsubscribe();
-  }, []);
+  }, [user]);
 
   return (
     <AuthContext.Provider value={{ session, user, loading }}>
