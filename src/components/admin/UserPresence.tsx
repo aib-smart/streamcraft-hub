@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { Loader2 } from "lucide-react";
-import { RealtimePresenceState } from "@supabase/supabase-js";
+import { useAuth } from "@/components/AuthProvider";
 
 type UserPresence = {
   user_id: string;
@@ -19,6 +19,7 @@ type UserPresence = {
 };
 
 const UserPresence = () => {
+  const { user } = useAuth();
   const [presenceState, setPresenceState] = useState<Record<string, UserPresence[]>>({});
 
   const { data: users, isLoading } = useQuery({
@@ -35,9 +36,20 @@ const UserPresence = () => {
   });
 
   useEffect(() => {
-    const channel = supabase.channel('online-users')
+    if (!user) return;
+
+    const channel = supabase.channel('online-users', {
+      config: {
+        presence: {
+          key: user.id,
+        },
+      },
+    });
+
+    channel
       .on('presence', { event: 'sync' }, () => {
         const newState = channel.presenceState<UserPresence>();
+        console.log('Presence state updated:', newState);
         setPresenceState(newState);
       })
       .on('presence', { event: 'join' }, ({ key, newPresences }) => {
@@ -48,17 +60,24 @@ const UserPresence = () => {
       })
       .subscribe(async (status) => {
         if (status === 'SUBSCRIBED') {
-          await channel.track({
-            user_id: (await supabase.auth.getUser()).data.user?.id,
+          const presenceTrackStatus = await channel.track({
+            user_id: user.id,
             online_at: new Date().toISOString(),
           });
+          console.log('Presence track status:', presenceTrackStatus);
         }
       });
 
     return () => {
-      supabase.removeChannel(channel);
+      channel.unsubscribe();
     };
-  }, []);
+  }, [user]);
+
+  const isUserOnline = (userId: string) => {
+    return Object.values(presenceState).some(presences =>
+      presences.some(presence => presence.user_id === userId)
+    );
+  };
 
   if (isLoading) {
     return (
@@ -67,12 +86,6 @@ const UserPresence = () => {
       </div>
     );
   }
-
-  const isUserOnline = (userId: string) => {
-    return Object.values(presenceState).some(presences =>
-      presences.some(presence => presence.user_id === userId)
-    );
-  };
 
   return (
     <div className="rounded-md border mt-4">
@@ -99,7 +112,7 @@ const UserPresence = () => {
               </TableCell>
               <TableCell>
                 <Badge
-                  variant={isUserOnline(user.user_id) ? "default" : "secondary"}
+                  variant={isUserOnline(user.user_id) ? "success" : "secondary"}
                 >
                   {isUserOnline(user.user_id) ? "Online" : "Offline"}
                 </Badge>
