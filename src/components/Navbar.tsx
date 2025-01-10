@@ -6,6 +6,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Shield, UserRound, LogOut } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { Tv } from 'lucide-react';
+import { ThemeToggle } from "./ThemeToggle";
 import {
   HoverCard,
   HoverCardContent,
@@ -65,6 +66,7 @@ const Navbar = () => {
         </Link>
 
         <div className="flex items-center gap-4">
+          <ThemeToggle />
           {user ? (
             <>
               {isAdmin && (

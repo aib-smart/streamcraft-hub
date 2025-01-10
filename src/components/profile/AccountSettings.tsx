@@ -19,14 +19,54 @@ import {
   AlertDescription,
   AlertTitle,
 } from "@/components/ui/alert";
+import { useAuth } from "@/components/AuthProvider";
+import { useQuery } from "@tanstack/react-query";
 
 const AccountSettings = () => {
   const { toast } = useToast();
-  const [notifications, setNotifications] = useState(true);
-  const [pushNotify, setPushNotify] = useState(true);
+  const { user } = useAuth();
   const [loading, setLoading] = useState(false);
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
+
+  const { data: notificationSettings } = useQuery({
+    queryKey: ["notificationSettings", user?.id],
+    queryFn: async () => {
+      if (!user) return null;
+      const { data } = await supabase
+        .from("notification_settings")
+        .select("*")
+        .eq("user_id", user.id)
+        .single();
+      return data;
+    },
+    enabled: !!user,
+  });
+
+  const updateNotificationSettings = async (
+    settings: Partial<typeof notificationSettings>
+  ) => {
+    if (!user) return;
+    setLoading(true);
+    const { error } = await supabase
+      .from("notification_settings")
+      .update(settings)
+      .eq("user_id", user.id);
+
+    if (error) {
+      toast({
+        title: "Error",
+        description: "Failed to update notification settings",
+        variant: "destructive",
+      });
+    } else {
+      toast({
+        title: "Success",
+        description: "Notification settings updated successfully",
+      });
+    }
+    setLoading(false);
+  };
 
   const handlePasswordChange = async () => {
     if (!currentPassword || !newPassword) {
@@ -103,22 +143,28 @@ const AccountSettings = () => {
               </span>
             </Label>
             <Switch
-              checked={notifications}
-              onCheckedChange={setNotifications}
+              checked={notificationSettings?.email_notifications ?? true}
+              onCheckedChange={(checked) =>
+                updateNotificationSettings({ email_notifications: checked })
+              }
               id="notifications"
+              disabled={loading}
             />
           </div>
           <div className="flex items-center justify-between space-y-4">
-            <Label htmlFor="notifications" className="flex flex-col space-y-1">
+            <Label htmlFor="pushNotify" className="flex flex-col space-y-1">
               <span>Push notifications</span>
               <span className="font-normal text-sm text-muted-foreground">
                 Receive push notifications in the browser
               </span>
             </Label>
             <Switch
-              checked={pushNotify}
-              onCheckedChange={setPushNotify}
+              checked={notificationSettings?.push_notifications ?? true}
+              onCheckedChange={(checked) =>
+                updateNotificationSettings({ push_notifications: checked })
+              }
               id="pushNotify"
+              disabled={loading}
             />
           </div>
         </CardContent>

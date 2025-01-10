@@ -6,7 +6,9 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { UserPresenceRow } from "./UserPresenceRow";
-import { Profile } from "./types";
+import { Database } from "@/integrations/supabase/types";
+
+type Profile = Database["public"]["Tables"]["profiles"]["Row"];
 
 interface UserPresenceTableProps {
   users: Array<{

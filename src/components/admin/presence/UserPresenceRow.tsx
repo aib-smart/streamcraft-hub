@@ -1,6 +1,8 @@
 import { TableCell, TableRow } from "@/components/ui/table";
 import { PresenceIndicator } from "./PresenceIndicator";
-import { Profile } from "./types";
+import { Database } from "@/integrations/supabase/types";
+
+type Profile = Database["public"]["Tables"]["profiles"]["Row"];
 
 interface UserPresenceRowProps {
   user: {
