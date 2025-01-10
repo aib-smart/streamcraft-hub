@@ -1,26 +1,13 @@
 import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-import { Badge } from "@/components/ui/badge";
 import { Loader2 } from "lucide-react";
 import { useAuth } from "@/components/AuthProvider";
-
-type UserPresence = {
-  user_id: string;
-  online_at: string;
-};
+import { UserPresenceTable } from "./presence/UserPresenceTable";
 
 const UserPresence = () => {
   const { user } = useAuth();
-  const [presenceState, setPresenceState] = useState<Record<string, UserPresence[]>>({});
+  const [presenceState, setPresenceState] = useState<Record<string, Array<{ user_id: string }>>>({});
 
   const { data: users, isLoading } = useQuery({
     queryKey: ["users"],
@@ -48,7 +35,7 @@ const UserPresence = () => {
 
     channel
       .on('presence', { event: 'sync' }, () => {
-        const newState = channel.presenceState<UserPresence>();
+        const newState = channel.presenceState<{ user_id: string }>();
         console.log('Presence state updated:', newState);
         setPresenceState(newState);
       })
@@ -73,12 +60,6 @@ const UserPresence = () => {
     };
   }, [user]);
 
-  const isUserOnline = (userId: string) => {
-    return Object.values(presenceState).some(presences =>
-      presences.some(presence => presence.user_id === userId)
-    );
-  };
-
   if (isLoading) {
     return (
       <div className="flex justify-center items-center h-64">
@@ -87,47 +68,7 @@ const UserPresence = () => {
     );
   }
 
-  return (
-    <div className="rounded-md border mt-4">
-      <Table>
-        <TableHeader>
-          <TableRow>
-            <TableHead>User</TableHead>
-            <TableHead>Status</TableHead>
-            <TableHead>Last Seen</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {users?.map((user) => (
-            <TableRow key={user.user_id}>
-              <TableCell>
-                <div className="flex flex-col">
-                  <span className="font-medium">
-                    {user.profiles?.username || "No username"}
-                  </span>
-                  <span className="text-sm text-muted-foreground">
-                    {user.profiles?.full_name || "No name"}
-                  </span>
-                </div>
-              </TableCell>
-              <TableCell>
-                <Badge
-                  variant={isUserOnline(user.user_id) ? "success" : "secondary"}
-                >
-                  {isUserOnline(user.user_id) ? "Online" : "Offline"}
-                </Badge>
-              </TableCell>
-              <TableCell>
-                {isUserOnline(user.user_id)
-                  ? "Currently Online"
-                  : "Not Available"}
-              </TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </div>
-  );
+  return <UserPresenceTable users={users || []} presenceState={presenceState} />;
 };
 
 export default UserPresence;
