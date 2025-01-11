@@ -46,18 +46,18 @@ const Admin = () => {
   }
 
   return (
-    <div className="container py-8">
+    <div className="container px-4 sm:px-6 lg:px-8 py-8">
       <div className="flex items-center gap-2 mb-6">
-        <Shield className="h-6 w-6" />
-        <h1 className="text-2xl font-bold">Admin Dashboard</h1>
+        <Shield className="h-5 w-5 sm:h-6 sm:w-6" />
+        <h1 className="text-xl sm:text-2xl font-bold">Admin Dashboard</h1>
       </div>
       
       <Tabs defaultValue="streams" className="w-full">
-        <TabsList>
-          <TabsTrigger value="streams">Stream Management</TabsTrigger>
-          <TabsTrigger value="users">User Management</TabsTrigger>
-          <TabsTrigger value="profiles">Profile Management</TabsTrigger>
-          <TabsTrigger value="presence">Online Users</TabsTrigger>
+        <TabsList className="w-full flex-wrap justify-start">
+          <TabsTrigger value="streams" className="flex-grow sm:flex-grow-0">Stream Management</TabsTrigger>
+          <TabsTrigger value="users" className="flex-grow sm:flex-grow-0">User Management</TabsTrigger>
+          <TabsTrigger value="profiles" className="flex-grow sm:flex-grow-0">Profile Management</TabsTrigger>
+          <TabsTrigger value="presence" className="flex-grow sm:flex-grow-0">Online Users</TabsTrigger>
         </TabsList>
         <TabsContent value="streams">
           <StreamManagement />

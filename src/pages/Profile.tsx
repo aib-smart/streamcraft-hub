@@ -91,15 +91,15 @@ const Profile = () => {
   }
 
   return (
-    <div className="container py-8 fade-in">
+    <div className="container px-4 sm:px-6 lg:px-8 py-8 fade-in">
       <div className="max-w-4xl mx-auto">
         <ProfileHeader profile={profile} isPremium={isPremium} />
 
         <Tabs defaultValue="profile" className="space-y-6">
-          <TabsList>
-            <TabsTrigger value="profile">Profile</TabsTrigger>
-            <TabsTrigger value="settings">Account Settings</TabsTrigger>
-            <TabsTrigger value="history">History</TabsTrigger>
+          <TabsList className="w-full flex-wrap justify-start">
+            <TabsTrigger value="profile" className="flex-grow sm:flex-grow-0">Profile</TabsTrigger>
+            <TabsTrigger value="settings" className="flex-grow sm:flex-grow-0">Account Settings</TabsTrigger>
+            <TabsTrigger value="history" className="flex-grow sm:flex-grow-0">History</TabsTrigger>
           </TabsList>
 
           <TabsContent value="profile">

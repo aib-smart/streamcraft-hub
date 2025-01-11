@@ -23,32 +23,36 @@ const StreamPage = () => {
   });
 
   if (isLoading) {
-    return <div className="flex items-center space-x-4"> 
-      <Skeleton className="h-12 w-12 rounded-full" />
-      <div className="space-y-2">
-      <Skeleton className="h-12 w-12 rounded-full" />
+    return (
+      <div className="container px-4 py-8">
+        <div className="flex flex-col space-y-4">
+          <Skeleton className="h-8 w-3/4 sm:w-1/2" />
+          <Skeleton className="h-[40vh] w-full" />
+          <Skeleton className="h-4 w-full sm:w-2/3" />
+        </div>
       </div>
-      <div className="space-y-2">
-      <Skeleton className="h-12 w-12 rounded-full" />
-      </div>
-    </div>;
+    );
   }
 
   if (!stream) {
-    return <div>Stream not found</div>;
+    return (
+      <div className="container px-4 py-8 text-center">
+        Stream not found
+      </div>
+    );
   }
 
   return (
-    <div className="container py-8">
+    <div className="container py-8 px-4 sm:px-6 lg:px-8">
       <div className="max-w-4xl mx-auto">
-        <h1 className="text-2xl font-bold mb-4">{stream.title}</h1>
+        <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4">{stream.title}</h1>
         {stream.stream_url && (
           <div className="aspect-video mb-4">
             <VideoPlayer url={stream.stream_url} />
           </div>
         )}
         {stream.description && (
-          <p className="text-muted-foreground">{stream.description}</p>
+          <p className="text-base sm:text-lg text-muted-foreground">{stream.description}</p>
         )}
       </div>
     </div>

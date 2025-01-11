@@ -44,20 +44,22 @@ const StreamDetail = () => {
   }
 
   if (!stream) {
-    return <div>Stream not found</div>;
+    return <div className="container px-4 py-8 text-center">Stream not found</div>;
   }
 
   return (
-    <div className="container py-8 fade-in">
-      <h1 className="text-4xl font-bold mb-4">{stream.title}</h1>
-      <div className="mb-6">
-        <p className="text-xl text-muted-foreground">{stream.description}</p>
-      </div>
+    <div className="container px-4 sm:px-6 lg:px-8 py-8 fade-in">
+      <div className="max-w-4xl mx-auto">
+        <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4">{stream.title}</h1>
+        <div className="mb-6">
+          <p className="text-base sm:text-lg md:text-xl text-muted-foreground">{stream.description}</p>
+        </div>
 
-      <div className="relative mb-8 overflow-hidden rounded-xl bg-black shadow-lg">
-        {stream.stream_url && (
-          <VideoPlayer url={stream.stream_url} />
-        )}
+        <div className="relative mb-8 overflow-hidden rounded-xl bg-black shadow-lg">
+          {stream.stream_url && (
+            <VideoPlayer url={stream.stream_url} />
+          )}
+        </div>
       </div>
     </div>
   );

@@ -24,33 +24,35 @@ const Auth = () => {
   }, [navigate, toast]);
 
   return (
-    <div className="container max-w-md mx-auto mt-8 p-4">
-      <h1 className="text-2xl font-bold mb-6 text-center">Yo, Welcome Back!</h1>
-      <div className="bg-card p-6 rounded-lg shadow-lg">
-        <SupabaseAuth 
-          supabaseClient={supabase}
-          appearance={{ 
-            theme: ThemeSupa,
-            variables: {
-              default: {
-                colors: {
-                  brand: 'rgb(0, 123, 255)',
-                  brandAccent: 'rgb(255, 255, 255)',
-                  defaultButtonBackground: 'rgb(0, 123, 255)',
-                  defaultButtonText: 'rgb(255, 255, 255)',
-                  defaultButtonBackgroundHover: 'rgb(4, 76, 154)',
-                  inputText: 'rgb(0, 0, 0)',
-                  inputBackground: 'rgb(255, 255, 255)',
-                  inputBorder: 'rgb(200, 200, 200)',
-                  inputBorderHover: 'rgb(0, 123, 255)',
-                  anchorTextColor: 'rgb(0, 123, 255)',
-                  anchorTextHoverColor: 'rgb(8, 92, 182)',
-                }
+    <div className="container mx-auto px-4 sm:px-6 lg:px-8 mt-8 md:mt-12">
+      <div className="max-w-md mx-auto">
+        <h1 className="text-xl sm:text-2xl font-bold mb-6 text-center">Yo, Welcome Back!</h1>
+        <div className="bg-card p-4 sm:p-6 rounded-lg shadow-lg">
+          <SupabaseAuth 
+            supabaseClient={supabase}
+            appearance={{ 
+              theme: ThemeSupa,
+              variables: {
+                default: {
+                  colors: {
+                    brand: 'rgb(0, 123, 255)',
+                    brandAccent: 'rgb(255, 255, 255)',
+                    defaultButtonBackground: 'rgb(0, 123, 255)',
+                    defaultButtonText: 'rgb(255, 255, 255)',
+                    defaultButtonBackgroundHover: 'rgb(4, 76, 154)',
+                    inputText: 'rgb(0, 0, 0)',
+                    inputBackground: 'rgb(255, 255, 255)',
+                    inputBorder: 'rgb(200, 200, 200)',
+                    inputBorderHover: 'rgb(0, 123, 255)',
+                    anchorTextColor: 'rgb(0, 123, 255)',
+                    anchorTextHoverColor: 'rgb(8, 92, 182)',
+                  }
+                },
               },
-            },
-          }}
-          providers={[]}
-        />
+            }}
+            providers={[]}
+          />
+        </div>
       </div>
     </div>
   );
