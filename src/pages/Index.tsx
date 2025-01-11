@@ -3,18 +3,8 @@ import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { Loader2 } from "lucide-react";
-import { useEffect, useState } from "react";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { UserRound } from "lucide-react";
-
-interface OnlineUser {
-  user_id: string;
-  online_at: string;
-}
 
 const Index = () => {
-  const [onlineUsers, setOnlineUsers] = useState<Record<string, OnlineUser[]>>({});
-
   const { data: streams, isLoading, error } = useQuery({
     queryKey: ["streams"],
     queryFn: async () => {
@@ -28,51 +18,6 @@ const Index = () => {
       return data || [];
     },
   });
-
-  const { data: profiles } = useQuery({
-    queryKey: ["online-profiles", Object.keys(onlineUsers)],
-    queryFn: async () => {
-      const userIds = Object.values(onlineUsers)
-        .flat()
-        .map(user => user.user_id);
-
-      if (userIds.length === 0) return [];
-
-      const { data } = await supabase
-        .from("profiles")
-        .select("id, username, avatar_url, full_name")
-        .in("id", userIds);
-
-      return data || [];
-    },
-    enabled: Object.keys(onlineUsers).length > 0,
-  });
-
-  useEffect(() => {
-    const channel = supabase.channel('online-users')
-      .on('presence', { event: 'sync' }, () => {
-        const newState = channel.presenceState<OnlineUser>();
-        console.log('Presence state updated:', newState);
-        setOnlineUsers(newState);
-      })
-      .on('presence', { event: 'join' }, ({ key, newPresences }) => {
-        console.log('User joined:', key, newPresences);
-      })
-      .on('presence', { event: 'leave' }, ({ key, leftPresences }) => {
-        console.log('User left:', key, leftPresences);
-      })
-      .subscribe(async (status) => {
-        if (status === 'SUBSCRIBED') {
-          await channel.track({
-            online_at: new Date().toISOString(),
-          });
-        }
-      });
-
-    return () => {
-      channel.unsubscribe();
-    };
-  }, []);
 
   if (isLoading) {
     return (
@@ -109,34 +54,6 @@ const Index = () => {
                 <Link to="/contact">Contact Us</Link>
               </Button>
             </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Online Users Section */}
-      <section className="py-8 px-4 sm:px-6 lg:px-8 bg-background/50">
-        <div className="max-w-7xl mx-auto">
-          <h2 className="text-2xl font-bold mb-6">Online Users</h2>
-          <div className="flex flex-wrap gap-4">
-            {profiles?.map((profile) => (
-              <div
-                key={profile.id}
-                className="flex items-center gap-2 bg-card p-3 rounded-lg"
-              >
-                <div className="relative">
-                  <Avatar className="h-8 w-8">
-                    <AvatarImage src={profile.avatar_url || undefined} />
-                    <AvatarFallback>
-                      <UserRound className="h-4 w-4" />
-                    </AvatarFallback>
-                  </Avatar>
-                  <div className="absolute bottom-0 right-0 h-2.5 w-2.5 rounded-full bg-green-500 ring-2 ring-white" />
-                </div>
-                <span className="text-sm font-medium">
-                  {profile.full_name || profile.username || "Anonymous"}
-                </span>
-              </div>
-            ))}
           </div>
         </div>
       </section>
