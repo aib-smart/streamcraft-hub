@@ -3,6 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useWatchHistory } from "@/hooks/useWatchHistory";
 import VideoPlayer from "@/components/VideoPlayer";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const StreamPage = () => {
   const { id } = useParams();
@@ -22,7 +23,15 @@ const StreamPage = () => {
   });
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <div className="flex items-center space-x-4"> 
+      <Skeleton className="h-12 w-12 rounded-full" />
+      <div className="space-y-2">
+      <Skeleton className="h-12 w-12 rounded-full" />
+      </div>
+      <div className="space-y-2">
+      <Skeleton className="h-12 w-12 rounded-full" />
+      </div>
+    </div>;
   }
 
   if (!stream) {
