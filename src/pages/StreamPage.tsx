@@ -6,7 +6,7 @@ import VideoPlayer from "@/components/VideoPlayer";
 
 const StreamPage = () => {
   const { id } = useParams();
-  useWatchHistory(id || '');
+  const { addToHistory } = useWatchHistory();
 
   const { data: stream, isLoading } = useQuery({
     queryKey: ["stream", id],
