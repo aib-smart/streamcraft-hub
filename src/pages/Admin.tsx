@@ -46,51 +46,58 @@ const Admin = () => {
   }
 
   return (
-    <div className="container max-w-full px-2 sm:px-4 lg:px-8 py-4 sm:py-8">
-      <div className="flex items-center gap-2 mb-4 sm:mb-6">
+    <div className="container max-w-full px-4 py-6">
+      <div className="flex items-center gap-2 mb-6">
         <Shield className="h-5 w-5" />
-        <h1 className="text-lg sm:text-2xl font-bold">Admin Dashboard</h1>
+        <h1 className="text-2xl font-bold">Admin Dashboard</h1>
       </div>
       
-      <Tabs defaultValue="streams" className="w-full space-y-4">
-        <TabsList className="w-full h-auto flex flex-wrap gap-2 bg-transparent p-0 sm:p-1 sm:bg-muted">
-          <TabsTrigger 
-            value="streams" 
-            className="flex-1 sm:flex-none data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
-          >
-            Streams
-          </TabsTrigger>
-          <TabsTrigger 
-            value="users" 
-            className="flex-1 sm:flex-none data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
-          >
-            Users
-          </TabsTrigger>
-          <TabsTrigger 
-            value="profiles" 
-            className="flex-1 sm:flex-none data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
-          >
-            Profiles
-          </TabsTrigger>
-          <TabsTrigger 
-            value="presence" 
-            className="flex-1 sm:flex-none data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
-          >
-            Online
-          </TabsTrigger>
-        </TabsList>
-        <TabsContent value="streams" className="mt-2 sm:mt-4">
-          <StreamManagement />
-        </TabsContent>
-        <TabsContent value="users" className="mt-2 sm:mt-4">
-          <UserManagement />
-        </TabsContent>
-        <TabsContent value="profiles" className="mt-2 sm:mt-4">
-          <ProfileManagement />
-        </TabsContent>
-        <TabsContent value="presence" className="mt-2 sm:mt-4">
-          <UserPresence />
-        </TabsContent>
+      <Tabs defaultValue="streams" className="w-full">
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-4">
+          <div className="md:col-span-2">
+            <TabsList className="flex flex-col h-auto w-full space-y-2 bg-transparent">
+              <TabsTrigger 
+                value="streams" 
+                className="w-full justify-start px-4 py-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
+              >
+                Streams
+              </TabsTrigger>
+              <TabsTrigger 
+                value="users" 
+                className="w-full justify-start px-4 py-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
+              >
+                Users
+              </TabsTrigger>
+              <TabsTrigger 
+                value="profiles" 
+                className="w-full justify-start px-4 py-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
+              >
+                Profiles
+              </TabsTrigger>
+              <TabsTrigger 
+                value="presence" 
+                className="w-full justify-start px-4 py-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
+              >
+                Online
+              </TabsTrigger>
+            </TabsList>
+          </div>
+          
+          <div className="md:col-span-10">
+            <TabsContent value="streams">
+              <StreamManagement />
+            </TabsContent>
+            <TabsContent value="users">
+              <UserManagement />
+            </TabsContent>
+            <TabsContent value="profiles">
+              <ProfileManagement />
+            </TabsContent>
+            <TabsContent value="presence">
+              <UserPresence />
+            </TabsContent>
+          </div>
+        </div>
       </Tabs>
     </div>
   );
