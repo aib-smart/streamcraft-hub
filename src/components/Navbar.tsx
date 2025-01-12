@@ -71,9 +71,9 @@ const Navbar = () => {
             <div className="flex items-center gap-2">
               {isAdmin && (
                 <Link to="/admin">
-                  <Button variant="ghost" size="sm" className="hidden sm:flex">
-                    <Shield className="h-4 w-4 sm:mr-2" />
-                    <span className="hidden sm:inline">Admin</span>
+                  <Button variant="ghost" size="icon" className="h-8 w-8 sm:h-9 sm:w-auto sm:px-3">
+                    <Shield className="h-4 w-4" />
+                    <span className="hidden sm:inline sm:ml-2">Admin</span>
                   </Button>
                 </Link>
               )}
