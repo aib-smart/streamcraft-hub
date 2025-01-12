@@ -57,23 +57,23 @@ const Navbar = () => {
 
   return (
     <nav className="border-b">
-      <div className="container mx-auto px-4 h-16 flex items-center justify-between">
-        <Link to="/jstreamz" className="font-semibold text-lg flex items-center gap-3 hover:text-primary transition-colors">
+      <div className="container mx-auto px-2 h-16 flex items-center justify-between">
+        <Link to="/jstreamz" className="font-semibold text-lg flex items-center gap-2 hover:text-primary transition-colors min-w-0 flex-shrink-0">
           <div className="flex h-8 w-8 items-center justify-center rounded-md bg-primary text-white p-1">
             <Tv className="h-5 w-5" />
           </div>
-          <span className="text-xl md:text-2xl text-foreground">JStreamz</span>
+          <span className="text-xl md:text-2xl text-foreground hidden sm:inline">JStreamz</span>
         </Link>
 
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-2 ml-auto">
           <ThemeToggle />
           {user ? (
-            <>
+            <div className="flex items-center gap-2">
               {isAdmin && (
                 <Link to="/admin">
-                  <Button variant="ghost" size="sm">
-                    <Shield className="h-4 w-4 mr-2" />
-                    Admin
+                  <Button variant="ghost" size="sm" className="hidden sm:flex">
+                    <Shield className="h-4 w-4 sm:mr-2" />
+                    <span className="hidden sm:inline">Admin</span>
                   </Button>
                 </Link>
               )}
@@ -81,7 +81,7 @@ const Navbar = () => {
                 <HoverCardTrigger asChild>
                   <button
                     onClick={handleProfileClick}
-                    className="flex items-center gap-3 mr-2 hover:opacity-80 hover:bg-white/20 transition-opacity focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 rounded-full"
+                    className="flex items-center gap-2 hover:opacity-80 hover:bg-white/20 transition-opacity focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 rounded-full p-1"
                   >
                     <Avatar className="h-8 w-8">
                       <AvatarImage src={profile?.avatar_url} />
@@ -89,9 +89,9 @@ const Navbar = () => {
                         <UserRound className="h-4 w-4" />
                       </AvatarFallback>
                     </Avatar>
-                    <div className="text-sm">
+                    <span className="text-sm hidden sm:inline">
                       {profile?.full_name || profile?.username || "User"}
-                    </div>
+                    </span>
                   </button>
                 </HoverCardTrigger>
                 <HoverCardContent className="w-48">
@@ -113,7 +113,7 @@ const Navbar = () => {
                   </div>
                 </HoverCardContent>
               </HoverCard>
-            </>
+            </div>
           ) : (
             location.pathname !== "/auth" && location.pathname !== "/" && (
               <Link to="/auth">
